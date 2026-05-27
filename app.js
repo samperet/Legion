@@ -695,7 +695,6 @@ function renderIndustriesOverview() {
             <strong class="overview-card-title">${escapeHtml(industry.title)}</strong>
             <span class="overview-card-meta">${escapeHtml(industry.meta)}</span>
           </div>
-          ${chips(industry.accounts, { logos: true })}
         </div>`
     )
     .join("");
@@ -826,10 +825,7 @@ function accordionCard(item, index, type) {
         ${detailBlock("Primary Buyers", chips(item.buyers))}
       </div>`
     : `
-      <div class="detail-grid">
-        ${detailBlock("Target Accounts", chips(item.accounts, { logos: true }))}
-        ${detailBlock("Primary Buyers", chips(item.buyers))}
-      </div>
+      ${detailBlock("Primary Buyers", chips(item.buyers))}
       ${detailBlock("Industry Problem", `<p>${escapeHtml(item.problem)}</p>`)}
       <div class="detail-grid">
         ${detailBlock("Legion Use Cases", list(item.useCases))}
