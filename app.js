@@ -1,17 +1,4 @@
 // ═══════════════════════════════════════════════════════════════════
-// CHECKBOX STATE (localStorage)
-// ═══════════════════════════════════════════════════════════════════
-
-const checkStore = {
-  _p: "legion-chk-",
-  get(k) { try { return localStorage.getItem(this._p + k); } catch { return null; } },
-  set(k, v) { try { localStorage.setItem(this._p + k, v); } catch {} }
-};
-
-function getCheckState(key) { return checkStore.get(key) === "true"; }
-function setCheckState(key, v) { checkStore.set(key, String(v)); }
-
-// ═══════════════════════════════════════════════════════════════════
 // DATA
 // ═══════════════════════════════════════════════════════════════════
 
@@ -580,62 +567,6 @@ const personas = [
   }
 ];
 
-const motionPhases = [
-  {
-    phase: "Phase 1",
-    title: "Executive Problem Validation",
-    items: [
-      "Test AI governance gaps",
-      "Validate unstructured data bottlenecks",
-      "Surface agent deployment concerns",
-      "Identify shadow AI usage",
-      "Map compliance, security, and audit requirements",
-      "Find workflows suitable for supervised agents"
-    ]
-  },
-  {
-    phase: "Phase 2",
-    title: "Industry-Specific Use Case Packaging",
-    items: [
-      "Healthcare: governed AI workflows for sensitive operational and administrative data",
-      "Life Sciences: traceable AI agents for regulated documentation and knowledge work",
-      "CPA and Advisory: defensible AI-enabled professional work product",
-      "Banking and Financial Services: supervised agentic workflows for regulated operations"
-    ]
-  },
-  {
-    phase: "Phase 3",
-    title: "Targeted Executive Access",
-    items: [
-      "Prioritize executive meetings over broad marketing",
-      "Focus on CIOs, CISOs, COOs, risk and compliance leaders",
-      "Include transformation leaders and business unit executives with urgent workflow pain"
-    ]
-  },
-  {
-    phase: "Phase 4",
-    title: "Pilot Design",
-    items: [
-      "Keep pilots narrow, high-value, and audit-friendly",
-      "Use unstructured data and judgment-sensitive workflows",
-      "Build human approval checkpoints",
-      "Define measurable time savings or risk reduction"
-    ]
-  },
-  {
-    phase: "Phase 5",
-    title: "Investor Narrative Support",
-    items: [
-      "Target industries identified",
-      "Executive meetings underway",
-      "Priority use cases validated",
-      "Pilot candidates defined",
-      "ALPS channel activated",
-      "Commercial arm operational during the raise"
-    ]
-  }
-];
-
 // ═══════════════════════════════════════════════════════════════════
 // TEMPLATE HELPERS
 // ═══════════════════════════════════════════════════════════════════
@@ -688,25 +619,6 @@ function detailBlock(title, content) {
   return `<div class="detail-block"><h4>${escapeHtml(title)}</h4>${content}</div>`;
 }
 
-function progressBar(done, total) {
-  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-  return `
-    <div class="progress-row">
-      <div class="progress-bar-wrap" title="${done} of ${total} complete">
-        <div class="progress-bar" style="width:${pct}%"></div>
-      </div>
-      <span class="progress-label">${done} / ${total}</span>
-    </div>`;
-}
-
-function checklistItem(text, checkKey) {
-  const done = getCheckState(checkKey);
-  return `
-    <li class="checklist-item${done ? " is-done" : ""}">
-      <input type="checkbox" ${done ? "checked" : ""} data-check-key="${escapeHtml(checkKey)}" aria-label="${escapeHtml(text)}">
-      <span>${escapeHtml(text)}</span>
-    </li>`;
-}
 
 // ═══════════════════════════════════════════════════════════════════
 // RENDER: TARGET ACCOUNTS (grouped by industry, logo + name only)
@@ -886,27 +798,6 @@ function renderPersonas(activeIndex = 0) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// RENDER: ENTRY MOTION
-// ═══════════════════════════════════════════════════════════════════
-
-function renderMotion() {
-  document.querySelector("#motion-list").innerHTML = motionPhases
-    .map((item, pi) => {
-      const doneCount = item.items.filter((_, ii) => getCheckState(`motion-${pi}-${ii}`)).length;
-      return `
-        <article class="timeline-card" style="--accent:${accents[pi % accents.length]}">
-          <span class="phase">${escapeHtml(item.phase)}</span>
-          <h3>${escapeHtml(item.title)}</h3>
-          ${progressBar(doneCount, item.items.length)}
-          <ul class="checklist">
-            ${item.items.map((text, ii) => checklistItem(text, `motion-${pi}-${ii}`)).join("")}
-          </ul>
-        </article>`;
-    })
-    .join("");
-}
-
-// ═══════════════════════════════════════════════════════════════════
 // SETUP: SIDEBAR
 // ═══════════════════════════════════════════════════════════════════
 
@@ -943,17 +834,28 @@ function setupSectionCollapsibles() {
     body.id = `${section.id}-body`;
     while (heading.nextSibling) body.appendChild(heading.nextSibling);
 
-    const toggle = document.createElement("button");
+    // Visual indicator — heading handles the click
+    const toggle = document.createElement("div");
     toggle.className = "section-toggle";
-    toggle.type = "button";
-    toggle.setAttribute("aria-expanded", "false");
-    toggle.setAttribute("aria-controls", body.id);
+    toggle.setAttribute("aria-hidden", "true");
     toggle.innerHTML = `<span class="section-toggle-label">Open</span><span class="chevron" aria-hidden="true"></span>`;
-    toggle.addEventListener("click", () => {
-      setSectionExpanded(section, toggle.getAttribute("aria-expanded") !== "true");
+    heading.appendChild(toggle);
+
+    // Click anywhere on heading to expand/collapse
+    heading.addEventListener("click", () => {
+      setSectionExpanded(section, !section.classList.contains("section-expanded"));
     });
 
-    heading.appendChild(toggle);
+    // Keyboard support
+    heading.setAttribute("role", "button");
+    heading.setAttribute("tabindex", "0");
+    heading.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        setSectionExpanded(section, !section.classList.contains("section-expanded"));
+      }
+    });
+
     section.appendChild(body);
     setSectionExpanded(section, false);
   });
@@ -962,9 +864,9 @@ function setupSectionCollapsibles() {
 function setSectionExpanded(section, expanded) {
   const toggle = section.querySelector(".section-toggle");
   const body = section.querySelector(".section-body");
-  if (!toggle || !body) return;
-  toggle.setAttribute("aria-expanded", String(expanded));
-  toggle.querySelector(".section-toggle-label").textContent = expanded ? "Close" : "Open";
+  if (!body) return;
+  const label = toggle?.querySelector(".section-toggle-label");
+  if (label) label.textContent = expanded ? "Close" : "Open";
   body.hidden = !expanded;
   section.classList.toggle("section-expanded", expanded);
 }
@@ -1035,32 +937,6 @@ function setupSearch() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// SETUP: CHECKBOXES
-// ═══════════════════════════════════════════════════════════════════
-
-function setupCheckboxes() {
-  document.addEventListener("change", (e) => {
-    const cb = e.target;
-    if (cb.type !== "checkbox" || !cb.dataset.checkKey) return;
-    setCheckState(cb.dataset.checkKey, cb.checked);
-    const item = cb.closest(".checklist-item");
-    if (item) item.classList.toggle("is-done", cb.checked);
-    updateProgress(cb.closest(".timeline-card"));
-  });
-}
-
-function updateProgress(card) {
-  if (!card) return;
-  const cbs = [...card.querySelectorAll("input[type='checkbox']")];
-  const done = cbs.filter((c) => c.checked).length;
-  const pct = cbs.length ? Math.round((done / cbs.length) * 100) : 0;
-  const bar = card.querySelector(".progress-bar");
-  const label = card.querySelector(".progress-label");
-  if (bar) bar.style.width = `${pct}%`;
-  if (label) label.textContent = `${done} / ${cbs.length}`;
-}
-
-// ═══════════════════════════════════════════════════════════════════
 // SETUP: NAV OBSERVER
 // ═══════════════════════════════════════════════════════════════════
 
@@ -1118,13 +994,11 @@ renderMarketFunctions();
 renderAccordions();
 renderTables();
 renderPersonas();
-renderMotion();
 
 setupSidebar();
 setupSectionCollapsibles();
 setupAccordions();
 setupSearch();
-setupCheckboxes();
 setupNavObserver();
 
 if (window.lucide) lucide.createIcons();

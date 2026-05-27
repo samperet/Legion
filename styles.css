@@ -563,10 +563,18 @@ p { overflow-wrap: anywhere; }
   align-items: start;
   gap: 12px;
   margin-bottom: 24px;
+  cursor: pointer;
+  user-select: none;
+  border-radius: var(--radius);
 }
 
 .section-block:not(.section-expanded) .section-heading {
   margin-bottom: 0;
+}
+
+.section-heading:hover .section-toggle {
+  border-color: var(--alps-slate);
+  background: var(--alps-navy-tint);
 }
 
 .section-heading .eyebrow,
@@ -589,17 +597,11 @@ p { overflow-wrap: anywhere; }
   padding: 6px 10px;
   background: var(--surface-fog);
   color: var(--fg-2);
-  cursor: pointer;
   white-space: nowrap;
-  font-family: inherit;
   font-size: 0.8rem;
   font-weight: 500;
+  pointer-events: none;
   transition: border-color var(--dur-fast) var(--ease-out), background var(--dur-fast);
-}
-
-.section-toggle:hover {
-  border-color: var(--alps-slate);
-  background: var(--alps-navy-tint);
 }
 
 .section-toggle .chevron { width: 22px; height: 22px; }
@@ -1235,115 +1237,6 @@ td:first-child {
   line-height: 1.6;
 }
 
-/* ═══ ENTRY MOTION ═════════════════════════════════════════════ */
-
-.timeline-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(160px, 1fr));
-  gap: 10px;
-}
-
-.timeline-card {
-  position: relative;
-  border: 1px solid var(--line);
-  border-top: 2px solid var(--accent, var(--alps-blue));
-  border-radius: var(--radius);
-  padding: 18px;
-  background: var(--surface-fog);
-  transition: border-color var(--dur-fast) var(--ease-out), box-shadow var(--dur) var(--ease-out);
-}
-
-.timeline-card:hover {
-  border-color: var(--alps-slate);
-  box-shadow: var(--shadow);
-}
-
-.timeline-card .phase {
-  display: block;
-  color: var(--fg-3);
-  font-size: 0.65rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-.timeline-card h3 {
-  margin-top: 6px;
-  font-size: 0.9rem;
-  color: var(--fg-1);
-  letter-spacing: -0.01em;
-}
-
-/* ═══ PROGRESS BAR ═════════════════════════════════════════════ */
-
-.progress-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.progress-bar-wrap {
-  flex: 1;
-  height: 4px;
-  border-radius: var(--radius-pill);
-  background: var(--line);
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  border-radius: var(--radius-pill);
-  background: var(--alps-blue);
-  transition: width 280ms var(--ease-out);
-}
-
-.progress-label {
-  flex: 0 0 auto;
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--fg-3);
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-/* ═══ CHECKLIST ════════════════════════════════════════════════ */
-
-.checklist {
-  display: grid;
-  gap: 6px;
-  margin: 10px 0 0;
-  padding: 0;
-  list-style: none;
-}
-
-.checklist-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.checklist-item input[type="checkbox"] {
-  flex: 0 0 15px;
-  width: 15px;
-  height: 15px;
-  margin-top: 3px;
-  cursor: pointer;
-  accent-color: var(--alps-blue);
-}
-
-.checklist-item span {
-  color: var(--fg-2);
-  font-size: 0.84rem;
-  line-height: 1.5;
-  transition: opacity var(--dur-fast);
-}
-
-.checklist-item.is-done span {
-  text-decoration: line-through;
-  opacity: 0.38;
-}
-
 /* ═══ MESSAGES ═════════════════════════════════════════════════ */
 
 .message-grid {
@@ -1438,7 +1331,6 @@ td:first-child {
   .content { padding-top: 24px; }
 
   .function-grid,
-  .timeline-grid,
   .activation-list,
   .message-grid,
   .overview-grid {
