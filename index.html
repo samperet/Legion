@@ -7,14 +7,41 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="app-shell" id="app-shell">
+
+    <!-- ── Login screen ──────────────────────────────────────────── -->
+    <div id="login-screen" class="login-screen" aria-label="Authentication">
+      <div class="login-card">
+        <img src="assets/alps-logo.png" alt="Acadia Leadership Partners" class="login-logo" />
+        <h1 class="login-title">Legion Strategy Portal</h1>
+        <p class="login-sub">This portal contains confidential commercial strategy.<br>Enter your access code to continue.</p>
+        <form class="login-form" id="login-form" onsubmit="return false">
+          <input
+            type="password"
+            id="login-password"
+            class="login-input"
+            placeholder="Access code"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+            aria-label="Access code"
+          />
+          <button type="submit" class="login-btn" id="login-submit">Enter</button>
+        </form>
+        <p class="login-error" id="login-error" hidden>Incorrect access code. Please try again.</p>
+        <p class="login-footer">Acadia Leadership Partners, Inc. · Confidential</p>
+      </div>
+    </div>
+
+    <!-- ── Main app (hidden until authenticated) ─────────────────── -->
+    <div class="app-shell" id="app-shell" hidden>
       <aside class="sidebar" aria-label="Strategy sections">
         <div class="sidebar-header">
           <a class="brand" href="#top" aria-label="Legion strategy portal home">
-            <span class="brand-mark" aria-hidden="true">L</span>
+            <img src="assets/alps-logo.png" alt="ALPS" class="sidebar-logo" />
             <span class="brand-text">
               <strong>Legion</strong>
-              <small>ALPS Strategy Portal</small>
+              <small>Strategy Portal</small>
             </span>
           </a>
           <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-label="Collapse sidebar" aria-pressed="false">

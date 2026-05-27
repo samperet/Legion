@@ -1002,3 +1002,48 @@ setupSearch();
 setupNavObserver();
 
 if (window.lucide) lucide.createIcons();
+
+// ═══════════════════════════════════════════════════════════════════
+// AUTH — password gate
+// ═══════════════════════════════════════════════════════════════════
+
+(function initAuth() {
+  const SESSION_KEY = "alps-legion-auth";
+  const loginScreen = document.getElementById("login-screen");
+  const appShell    = document.getElementById("app-shell");
+  const form        = document.getElementById("login-form");
+  const input       = document.getElementById("login-password");
+  const error       = document.getElementById("login-error");
+
+  function unlock() {
+    sessionStorage.setItem(SESSION_KEY, "1");
+    loginScreen.hidden = true;
+    appShell.hidden = false;
+    input.value = "";
+    error.hidden = true;
+  }
+
+  // Already authenticated this session
+  if (sessionStorage.getItem(SESSION_KEY) === "1") {
+    unlock();
+    return;
+  }
+
+  // Show login
+  loginScreen.hidden = false;
+  appShell.hidden = true;
+  setTimeout(() => input.focus(), 80);
+
+  form.addEventListener("submit", () => {
+    if (input.value === "getmetothealps") {
+      unlock();
+    } else {
+      error.hidden = false;
+      input.value = "";
+      input.focus();
+      // Shake animation
+      input.classList.add("login-shake");
+      input.addEventListener("animationend", () => input.classList.remove("login-shake"), { once: true });
+    }
+  });
+})();
