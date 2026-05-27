@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ALPS · Comparison</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="slide-base.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FAFAF8; overflow: hidden; width: 100vw; height: 100vh;}
+  .stage { width: 100vw; height: 100vh; position: relative; overflow: hidden;}
+  .scale {
+    position: absolute; top: 0; left: 0;
+    width: 1920px; height: 1080px;
+    transform-origin: 0 0;
+  }
+</style>
+<script>
+  const fit = () => {
+    const el = document.querySelector('.scale');
+    if (!el) return;
+    const sx = window.innerWidth / 1920;
+    const sy = window.innerHeight / 1080;
+    const s = Math.min(sx, sy);
+    const tx = (window.innerWidth - 1920 * s) / 2;
+    const ty = (window.innerHeight - 1080 * s) / 2;
+    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
+  };
+  window.addEventListener('resize', fit);
+  document.addEventListener('DOMContentLoaded', fit);
+  // also run early in case load timing differs
+  setTimeout(fit, 0);
+</script>
+</head>
+<body>
+  <div class="stage"><div class="scale"><section class="slide">
+  <div class="slide__chrome-top">
+    <img src="../assets/alps-logo.png" alt="ALPS"/>
+    <span class="meta">03 · Comparison</span>
+  </div>
+  <div class="slide__body" style="gap: 56px;">
+    <div style="max-width: 1400px;">
+      <span class="eyebrow">Two approaches</span>
+      <h2 style="margin-top: 28px;">Two paths to the same destination.<br/>Different costs.</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 48px; flex: 1;">
+      <div style="background: #fff; border: 1px solid #D7DEE3; border-radius: 4px; padding: 48px;">
+        <span style="font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: #6F7A7D; font-weight: 500;">Path A</span>
+        <h3 style="font-size: 40px; color: #103758; letter-spacing: -0.02em; margin: 14px 0 24px; font-weight: 600;">Internal promotion</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; font-size: 22px; color: #445253; line-height: 1.5;">
+          <li><strong style="color:#103758;">12 months</strong> to install</li>
+          <li><strong style="color:#103758;">Continuity</strong> of culture and customer relationships</li>
+          <li>Risk: institutional myopia, no fresh perspective</li>
+          <li>Cost: roughly <strong style="color:#103758;">0.8&times; revenue</strong> in transition friction</li>
+        </ul>
+      </div>
+      <div style="background: #fff; border: 1px solid #D7DEE3; border-top: 3px solid #2299CE; border-radius: 4px; padding: 48px;">
+        <span style="font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: #2299CE; font-weight: 500;">Path B · Recommended</span>
+        <h3 style="font-size: 40px; color: #103758; letter-spacing: -0.02em; margin: 14px 0 24px; font-weight: 600;">External search</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; display: grid; gap: 18px; font-size: 22px; color: #445253; line-height: 1.5;">
+          <li><strong style="color:#103758;">18–24 months</strong> to install</li>
+          <li><strong style="color:#103758;">Fresh perspective</strong> with industry credibility</li>
+          <li>Risk: cultural friction, identity dilution</li>
+          <li>Cost: roughly <strong style="color:#103758;">1.4&times; revenue</strong>, paired with structural reset</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="slide__chrome-bottom"><span>Comparison</span><span>03</span><span>Confidential</span></div>
+</section></div></div>
+</body>
+</html>

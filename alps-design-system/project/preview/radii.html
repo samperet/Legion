@@ -1,0 +1,16 @@
+<!-- @dsCard group="Spacing" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 28px 32px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; align-items: end; }
+  .demo { background: #fff; border: 1px solid var(--alps-slate-line); height: 80px; display: grid; place-items: center; color: var(--alps-navy); font-weight: 600; font-size: 11px; }
+  .lbl { font-size: 11px; color: var(--fg-3); text-align: center; margin-top: 6px; font-variant-numeric: tabular-nums;}
+  .use { font-size: 10px; color: var(--fg-3); text-align: center; margin-top: 2px;}
+</style></head>
+<body>
+  <div><div class="demo" style="border-radius: 0;">0</div><div class="lbl">0 px</div><div class="use">Hero blocks</div></div>
+  <div><div class="demo" style="border-radius: 2px;">sm</div><div class="lbl">2 px</div><div class="use">Tags</div></div>
+  <div><div class="demo" style="border-radius: 4px;">default</div><div class="lbl">4 px</div><div class="use">Buttons, cards</div></div>
+  <div><div class="demo" style="border-radius: 8px;">md</div><div class="lbl">8 px</div><div class="use">Modals only</div></div>
+  <div><div class="demo" style="border-radius: 999px; max-width: 80px; margin: 0 auto;">pill</div><div class="lbl">999 px</div><div class="use">Status chips</div></div>
+</body></html>

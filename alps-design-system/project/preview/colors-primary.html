@@ -1,0 +1,20 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 24px; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .sw { border: 1px solid var(--alps-slate-line); border-radius: 4px; overflow: hidden; background: #fff; }
+  .chip { height: 96px; }
+  .lbl { padding: 12px 14px 14px; }
+  .lbl .name { font-weight: 600; color: var(--alps-navy); font-size: 13px; letter-spacing: -0.01em;}
+  .lbl .hex  { font-family: var(--font-sans); font-size: 11px; color: var(--fg-3); letter-spacing: 0.04em; margin-top: 2px; font-variant-numeric: tabular-nums;}
+  .lbl .use  { font-size: 11px; color: var(--fg-3); margin-top: 6px; line-height: 1.45;}
+</style></head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#2299CE"></div><div class="lbl"><div class="name">ALPS Blue</div><div class="hex">#2299CE</div><div class="use">Hero accent. CTAs, the arc, key data.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#103758"></div><div class="lbl"><div class="name">Deep Navy</div><div class="hex">#103758</div><div class="use">Anchors, footers, dark hero blocks.</div></div></div>
+    <div class="sw"><div class="chip" style="background:#445253"></div><div class="lbl"><div class="name">Slate Graphite</div><div class="hex">#445253</div><div class="use">Default body text & UI.</div></div></div>
+  </div>
+</body></html>

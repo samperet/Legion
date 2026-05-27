@@ -1,0 +1,22 @@
+<!-- @dsCard group="Colors" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 24px; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .sw { border: 1px solid var(--alps-slate-line); border-radius: 4px; overflow: hidden; background: #fff; }
+  .chip { height: 80px; }
+  .lbl { padding: 10px 14px 14px; }
+  .lbl .name { font-weight: 600; color: var(--alps-navy); font-size: 12px;}
+  .lbl .hex  { font-size: 11px; color: var(--fg-3); margin-top: 2px; font-variant-numeric: tabular-nums;}
+  .lbl .use  { font-size: 11px; color: var(--fg-3); margin-top: 6px; line-height: 1.4;}
+  .note { font-size: 11px; color: var(--fg-3); margin-top: 14px; font-style: italic;}
+</style></head>
+<body>
+  <div class="row">
+    <div class="sw"><div class="chip" style="background:#5F7A4C"></div><div class="lbl"><div class="name">Moss · success</div><div class="hex">#5F7A4C</div><div class="use">Confirmed, completed</div></div></div>
+    <div class="sw"><div class="chip" style="background:#B07A2B"></div><div class="lbl"><div class="name">Ochre · warning</div><div class="hex">#B07A2B</div><div class="use">Attention, pending</div></div></div>
+    <div class="sw"><div class="chip" style="background:#9A3B2E"></div><div class="lbl"><div class="name">Brick · danger</div><div class="hex">#9A3B2E</div><div class="use">Error, destructive</div></div></div>
+  </div>
+  <p class="note">Muted, earthen tones — never web‑bright red/green/yellow. Used inside the product surface only; not on marketing pages.</p>
+</body></html>

@@ -1,0 +1,45 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 32px; display: grid; gap: 18px; }
+  .row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap;}
+  .btn {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0;
+    padding: 12px 22px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: background 180ms ease-out, border-color 180ms ease-out, color 180ms ease-out;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary { background: #2299CE; color: #fff;}
+  .btn-primary:hover { background: #1A7AA8;}
+  .btn-secondary { background: transparent; color: #103758; border-color: #103758;}
+  .btn-secondary:hover { background: #103758; color: #fff;}
+  .btn-ghost { background: transparent; color: #2299CE; padding-left: 0; padding-right: 0;}
+  .btn-ghost:hover { color: #1A7AA8;}
+  .btn-dark { background: #103758; color: #fff;}
+  .btn-dark:hover { background: #0A2540;}
+  .btn-sm { padding: 8px 14px; font-size: 13px;}
+  .arrow { transition: transform 180ms ease-out;}
+  .btn-ghost:hover .arrow { transform: translateX(3px);}
+  .lbl { font-size: 11px; color: var(--fg-3); width: 80px;}
+</style></head>
+<body>
+  <div class="row"><div class="lbl">Primary</div>
+    <button class="btn btn-primary">Schedule a Conversation</button>
+    <button class="btn btn-primary btn-sm">Continue</button>
+  </div>
+  <div class="row"><div class="lbl">Secondary</div>
+    <button class="btn btn-secondary">View Our Practice</button>
+    <button class="btn btn-dark">Read the Letter</button>
+  </div>
+  <div class="row"><div class="lbl">Ghost</div>
+    <button class="btn btn-ghost">Read more <span class="arrow">→</span></button>
+    <button class="btn btn-ghost">Download PDF <span class="arrow">↗</span></button>
+  </div>
+</body></html>

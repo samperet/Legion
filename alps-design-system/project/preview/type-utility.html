@@ -1,0 +1,20 @@
+<!-- @dsCard group="Type" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 28px 32px; }
+  .stack { display: grid; gap: 22px; }
+  .row { display: grid; grid-template-columns: 140px 1fr; align-items: end; gap: 24px; }
+  .lbl { font-size: 11px; color: var(--fg-3); letter-spacing: 0.04em; padding-bottom: 4px; }
+  .ex { color: var(--alps-navy); }
+  .eyebrow-demo { font-size: 11px; color: var(--alps-blue); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 500; }
+  .eyebrow-demo::after { content:''; display:block; width:32px; height:2px; background:#2299CE; margin-top:6px;}
+  .stat { font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; font-size: 44px; color: var(--alps-navy); line-height: 1;}
+  .stat small { font-size: 18px; color: var(--alps-blue); font-weight: 500; margin-left: 6px;}
+</style></head>
+<body>
+  <div class="stack">
+    <div class="row"><div class="lbl">Eyebrow</div><div class="eyebrow-demo">Practice areas</div></div>
+    <div class="row"><div class="lbl">Stat numeral</div><div class="stat">40<small>+ years</small></div></div>
+  </div>
+</body></html>

@@ -1,0 +1,29 @@
+<!-- @dsCard group="Spacing" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 32px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: end; background: var(--surface-page); }
+  .demo { background: #fff; height: 100px; border-radius: 4px; display: grid; place-items: center; color: var(--alps-navy); font-weight: 600; font-size: 12px;}
+  .a { border: 1px solid var(--alps-slate-line); }
+  .b { border: 1px solid var(--alps-slate-line); box-shadow: 0 12px 32px -16px rgba(16, 55, 88, 0.25);}
+  .c { border: 1px solid var(--alps-slate-line); box-shadow: 0 24px 64px -24px rgba(16, 55, 88, 0.35);}
+  .lbl { font-size: 11px; color: var(--alps-navy); font-weight: 600; margin-top: 10px; }
+  .desc { font-size: 11px; color: var(--fg-3); margin-top: 2px; }
+</style></head>
+<body>
+  <div>
+    <div class="demo a">Resting</div>
+    <div class="lbl">No shadow</div>
+    <div class="desc">1px hairline border only. Print‑like.</div>
+  </div>
+  <div>
+    <div class="demo b">Hover · Lift</div>
+    <div class="lbl">--shadow-lift</div>
+    <div class="desc">0 12px 32px ‑16px rgba(16, 55, 88, 0.25)</div>
+  </div>
+  <div>
+    <div class="demo c">Modal</div>
+    <div class="lbl">--shadow-modal</div>
+    <div class="desc">0 24px 64px ‑24px rgba(16, 55, 88, 0.35)</div>
+  </div>
+</body></html>

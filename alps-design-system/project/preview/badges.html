@@ -1,0 +1,31 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 28px 32px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center;}
+  .chip {
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    display: inline-flex; gap: 6px; align-items: center;
+  }
+  .neutral { background: #E8EDF1; color: #103758;}
+  .blue    { background: #E6F2F9; color: #155F84;}
+  .moss    { background: #ECEFE5; color: #5F7A4C;}
+  .ochre   { background: #F4EBDB; color: #8C5E1A;}
+  .brick   { background: #F2DFDB; color: #7A2E22;}
+  .dot { width: 6px; height: 6px; border-radius: 50%;}
+  .dot.b { background: #5F7A4C;}
+  .dot.o { background: #B07A2B;}
+  .dot.r { background: #9A3B2E;}
+</style></head>
+<body>
+  <span class="chip neutral">Confidential</span>
+  <span class="chip blue">Active engagement</span>
+  <span class="chip moss"><span class="dot b"></span>Confirmed</span>
+  <span class="chip ochre"><span class="dot o"></span>Pending review</span>
+  <span class="chip brick"><span class="dot r"></span>Action required</span>
+  <span class="chip neutral">2025 Cohort</span>
+</body></html>

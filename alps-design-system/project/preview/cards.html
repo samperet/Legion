@@ -1,0 +1,27 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 28px 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;}
+  .card { background: #fff; border: 1px solid var(--alps-slate-line); border-radius: 4px; padding: 24px; transition: border-color 180ms, box-shadow 180ms;}
+  .card:hover { border-color: var(--alps-slate); box-shadow: 0 12px 32px -16px rgba(16, 55, 88, 0.25);}
+  .card.featured { border-top: 2px solid var(--alps-blue);}
+  .eyebrow { font-size: 10px; color: var(--alps-blue); text-transform: uppercase; letter-spacing: 0.12em; font-weight: 500;}
+  h3 { font-size: 19px; color: var(--alps-navy); margin: 8px 0 8px; letter-spacing: -0.01em; font-weight: 600;}
+  p { font-size: 13px; line-height: 1.6; color: var(--alps-slate); margin: 0;}
+  .lnk { display: inline-flex; gap: 6px; font-size: 12px; color: var(--alps-blue); margin-top: 14px; font-weight: 500;}
+</style></head>
+<body>
+  <div class="card">
+    <span class="eyebrow">Practice</span>
+    <h3>Succession planning</h3>
+    <p>For founders and family principals approaching the next chapter. We help structure the handoff.</p>
+    <span class="lnk">Read more →</span>
+  </div>
+  <div class="card featured">
+    <span class="eyebrow">Featured · Practice</span>
+    <h3>Board advisory</h3>
+    <p>Independent counsel for boards navigating CEO transition, M&amp;A, or strategic reset.</p>
+    <span class="lnk">Read more →</span>
+  </div>
+</body></html>

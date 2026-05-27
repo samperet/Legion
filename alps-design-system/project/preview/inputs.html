@@ -1,0 +1,37 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 32px; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;}
+  .field { display: grid; gap: 6px;}
+  label { font-size: 11px; color: #103758; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;}
+  input, textarea, select {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    color: var(--alps-navy);
+    background: #fff;
+    border: 1px solid var(--alps-slate-line);
+    border-radius: 4px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 180ms ease-out;
+  }
+  input:focus, textarea:focus, select:focus { border-color: var(--alps-blue); box-shadow: 0 0 0 3px rgba(34, 153, 206, 0.18);}
+  textarea { min-height: 60px; resize: none;}
+  .help { font-size: 11px; color: var(--fg-3); }
+</style></head>
+<body>
+  <div class="field">
+    <label>Full name</label>
+    <input type="text" value="Margaret Holloway" />
+  </div>
+  <div class="field">
+    <label>Email</label>
+    <input type="email" placeholder="you@firm.com" />
+  </div>
+  <div class="field" style="grid-column: 1 / -1;">
+    <label>How can we help?</label>
+    <textarea placeholder="A few sentences is enough."></textarea>
+    <span class="help">We respond within two business days.</span>
+  </div>
+</body></html>

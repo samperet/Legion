@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ALPS · Section</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="slide-base.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: #103758; overflow: hidden; width: 100vw; height: 100vh;}
+  .stage { width: 100vw; height: 100vh; position: relative; overflow: hidden;}
+  .scale {
+    position: absolute; top: 0; left: 0;
+    width: 1920px; height: 1080px;
+    transform-origin: 0 0;
+  }
+</style>
+<script>
+  const fit = () => {
+    const el = document.querySelector('.scale');
+    if (!el) return;
+    const sx = window.innerWidth / 1920;
+    const sy = window.innerHeight / 1080;
+    const s = Math.min(sx, sy);
+    const tx = (window.innerWidth - 1920 * s) / 2;
+    const ty = (window.innerHeight - 1080 * s) / 2;
+    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
+  };
+  window.addEventListener('resize', fit);
+  document.addEventListener('DOMContentLoaded', fit);
+  // also run early in case load timing differs
+  setTimeout(fit, 0);
+</script>
+</head>
+<body>
+  <div class="stage"><div class="scale"><section class="slide dark">
+  <svg class="arc-bg top" viewBox="0 0 1200 200" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" style="opacity:0.22"><path d="M0 180 C 200 40, 1000 40, 1200 180"/></svg>
+  <div class="slide__chrome-top">
+    <img src="../assets/alps-logo.png" alt="ALPS"/>
+    <span class="meta">Section 02</span>
+  </div>
+  <div class="slide__body" style="justify-content:center; gap: 56px;">
+    <span class="eyebrow">Section two</span>
+    <h1 style="max-width: 1500px; font-size: 128px; line-height: 1;">The handoff,<br/>read as a sequence.</h1>
+    <p class="lede" style="max-width: 1100px;">Four moves over eighteen months. Each one rehearsed in private, executed in public.</p>
+  </div>
+  <div class="slide__chrome-bottom"><span>Section divider</span><span>02</span><span>Confidential</span></div>
+</section></div></div>
+</body>
+</html>

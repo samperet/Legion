@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ALPS · Quote</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="slide-base.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: #FAFAF8; overflow: hidden; width: 100vw; height: 100vh;}
+  .stage { width: 100vw; height: 100vh; position: relative; overflow: hidden;}
+  .scale {
+    position: absolute; top: 0; left: 0;
+    width: 1920px; height: 1080px;
+    transform-origin: 0 0;
+  }
+</style>
+<script>
+  const fit = () => {
+    const el = document.querySelector('.scale');
+    if (!el) return;
+    const sx = window.innerWidth / 1920;
+    const sy = window.innerHeight / 1080;
+    const s = Math.min(sx, sy);
+    const tx = (window.innerWidth - 1920 * s) / 2;
+    const ty = (window.innerHeight - 1080 * s) / 2;
+    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + s + ')';
+  };
+  window.addEventListener('resize', fit);
+  document.addEventListener('DOMContentLoaded', fit);
+  // also run early in case load timing differs
+  setTimeout(fit, 0);
+</script>
+</head>
+<body>
+  <div class="stage"><div class="scale"><section class="slide">
+  <div class="slide__chrome-top">
+    <img src="../assets/alps-logo.png" alt="ALPS"/>
+    <span class="meta">04 · Field note</span>
+  </div>
+  <div class="slide__body" style="justify-content:center; align-items: flex-start; max-width: 1500px;">
+    <span style="font-family: Georgia, serif; font-size: 280px; color: #2299CE; line-height: 0.4; margin-bottom: 32px;">“</span>
+    <blockquote style="font-size: 72px; line-height: 1.18; color: #103758; letter-spacing: -0.018em; font-weight: 400; margin: 0; max-width: 1500px; text-wrap: balance;">
+      ALPS sat with our board for ninety days before they offered a single opinion. When the recommendation came, it was the right one — and it was ours, not theirs.
+    </blockquote>
+    <figcaption style="margin-top: 56px; display: flex; align-items: center; gap: 28px;">
+      <span style="display: block; width: 64px; height: 2px; background: #2299CE;"></span>
+      <div>
+        <strong style="display: block; font-size: 22px; color: #103758; font-weight: 600;">Robert Kessler</strong>
+        <span style="font-size: 18px; color: #6F7A7D; margin-top: 4px; display: block;">Chair, Kessler Maritime · Engagement 2023</span>
+      </div>
+    </figcaption>
+  </div>
+  <div class="slide__chrome-bottom"><span>Quotation</span><span>04</span><span>Confidential</span></div>
+</section></div></div>
+</body>
+</html>

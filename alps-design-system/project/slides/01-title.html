@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>ALPS · Title</title>
+<link rel="stylesheet" href="../colors_and_type.css" />
+<link rel="stylesheet" href="slide-base.css" />
+<style>
+  html, body { margin: 0; padding: 0; background: #0A2540; overflow: hidden; width: 100vw; height: 100vh;}
+  .stage { width: 100vw; height: 100vh; position: relative; overflow: hidden;}
+  .scale { position: absolute; top: 0; left: 0; width: 1920px; height: 1080px; transform-origin: 0 0;}
+</style>
+<script>
+  const fit = () => {
+    const el = document.querySelector('.scale'); if (!el) return;
+    const s = Math.min(window.innerWidth/1920, window.innerHeight/1080);
+    const tx = (window.innerWidth - 1920*s)/2;
+    const ty = (window.innerHeight - 1080*s)/2;
+    el.style.transform = 'translate('+tx+'px,'+ty+'px) scale('+s+')';
+  };
+  window.addEventListener('resize', fit);
+  document.addEventListener('DOMContentLoaded', fit);
+  setTimeout(fit, 0);
+</script>
+</head>
+<body>
+  <div class="stage"><div class="scale"><section class="slide" style="background: #0A2540; color: #fff;">
+  <div style="position: absolute; inset: 0; background-image: url('../assets/hero-alps.png'); background-size: cover; background-position: center 35%;"></div>
+  <div style="position: absolute; inset: 0; background: linear-gradient(110deg, rgba(10,37,64,0.85) 0%, rgba(10,37,64,0.55) 35%, rgba(10,37,64,0.15) 65%, rgba(10,37,64,0.05) 100%);"></div>
+  <div class="slide__chrome-top" style="position: relative;">
+    <img src="../assets/alps-logo.png" alt="ALPS" style="filter: brightness(0) invert(1);"/>
+    <span class="meta" style="color: rgba(255,255,255,0.65);">Confidential</span>
+  </div>
+  <div class="slide__body" style="justify-content: center; gap: 48px; position: relative;">
+    <span class="eyebrow" style="color: #7BB8DC;">Board engagement &middot; April 2026</span>
+    <h1 style="max-width: 1500px; color: #fff; font-size: 128px; line-height: 1.0; text-shadow: 0 2px 24px rgba(10,37,64,0.4);">The summit is rarely<br/>reached alone.</h1>
+    <p class="lede" style="max-width: 1100px; color: rgba(255,255,255,0.88); text-shadow: 0 1px 12px rgba(10,37,64,0.4);">Prepared for the Board of Directors of Kessler Maritime. Strictly confidential and held in the trust of the named principals.</p>
+  </div>
+  <div class="slide__chrome-bottom" style="position: absolute; color: rgba(255,255,255,0.55);">
+    <span>Acadia Leadership Partners</span><span style="color: #7BB8DC;">01</span><span>acadialps.com</span>
+  </div>
+</section></div></div>
+</body>
+</html>

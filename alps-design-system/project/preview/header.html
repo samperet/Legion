@@ -1,0 +1,27 @@
+<!-- @dsCard group="Components" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  body { padding: 0; margin: 0; background: #FAFAF8;}
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 22px 36px; border-bottom: 1px solid var(--alps-slate-line); background: #fff;}
+  .brand { height: 28px;}
+  .brand img { height: 100%;}
+  .links { display: flex; gap: 32px;}
+  .links a { font-size: 13px; color: var(--alps-slate); font-weight: 500; position: relative; padding-bottom: 4px;}
+  .links a.active { color: var(--alps-navy);}
+  .links a.active::after { content: ''; position: absolute; left: 0; right: 0; bottom: -10px; height: 2px; background: var(--alps-blue);}
+  .cta { font-size: 13px; padding: 9px 18px; background: var(--alps-navy); color: #fff; border-radius: 4px; font-weight: 500;}
+</style></head>
+<body>
+  <div class="nav">
+    <div class="brand"><img src="../assets/alps-logo.png" alt="ALPS"></div>
+    <div class="links">
+      <a class="active" href="#">Approach</a>
+      <a href="#">Practice</a>
+      <a href="#">Team</a>
+      <a href="#">Perspectives</a>
+      <a href="#">Contact</a>
+    </div>
+    <a class="cta" href="#">Schedule a Conversation</a>
+  </div>
+</body></html>

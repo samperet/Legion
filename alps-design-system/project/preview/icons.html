@@ -1,0 +1,39 @@
+<!-- @dsCard group="Brand" -->
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<style>
+  body { padding: 28px 32px;}
+  .grid { display: grid; grid-template-columns: repeat(10, 1fr); gap: 18px; color: var(--alps-slate);}
+  .cell { display: grid; place-items: center; gap: 8px; text-align: center;}
+  .cell svg { width: 22px; height: 22px; stroke-width: 1.5;}
+  .name { font-size: 10px; color: var(--fg-3);}
+  .note { font-size: 11px; color: var(--fg-3); margin-top: 18px; line-height: 1.5;}
+  .note strong { color: var(--alps-navy);}
+</style></head>
+<body>
+  <div class="grid">
+    <div class="cell"><i data-lucide="arrow-right"></i><div class="name">arrow-right</div></div>
+    <div class="cell"><i data-lucide="arrow-up-right"></i><div class="name">arrow-up-right</div></div>
+    <div class="cell"><i data-lucide="check"></i><div class="name">check</div></div>
+    <div class="cell"><i data-lucide="quote"></i><div class="name">quote</div></div>
+    <div class="cell"><i data-lucide="mail"></i><div class="name">mail</div></div>
+    <div class="cell"><i data-lucide="phone"></i><div class="name">phone</div></div>
+    <div class="cell"><i data-lucide="map-pin"></i><div class="name">map-pin</div></div>
+    <div class="cell"><i data-lucide="calendar"></i><div class="name">calendar</div></div>
+    <div class="cell"><i data-lucide="users"></i><div class="name">users</div></div>
+    <div class="cell"><i data-lucide="briefcase"></i><div class="name">briefcase</div></div>
+    <div class="cell"><i data-lucide="building-2"></i><div class="name">building‑2</div></div>
+    <div class="cell"><i data-lucide="trending-up"></i><div class="name">trending‑up</div></div>
+    <div class="cell"><i data-lucide="target"></i><div class="name">target</div></div>
+    <div class="cell"><i data-lucide="compass"></i><div class="name">compass</div></div>
+    <div class="cell"><i data-lucide="linkedin"></i><div class="name">linkedin</div></div>
+    <div class="cell"><i data-lucide="external-link"></i><div class="name">external-link</div></div>
+    <div class="cell"><i data-lucide="chevron-down"></i><div class="name">chevron-down</div></div>
+    <div class="cell"><i data-lucide="plus"></i><div class="name">plus</div></div>
+    <div class="cell"><i data-lucide="menu"></i><div class="name">menu</div></div>
+    <div class="cell"><i data-lucide="x"></i><div class="name">x</div></div>
+  </div>
+  <p class="note"><strong>Lucide</strong> · 1.5px stroke · slate by default, blue on hover. Substitute icon set — flag to user if ALPS has a custom kit.</p>
+  <script>lucide.createIcons();</script>
+</body></html>
