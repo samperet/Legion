@@ -360,7 +360,8 @@ const INDUSTRY_OPTIONS = [
   "CPA, Advisory, and Professional Services",
   "Banking, Financial Services, Wealth, and Insurance",
   "Aerospace, Defense, and Industrial Defense",
-  "Industrial, Manufacturing, and Critical Operations"
+  "Industrial, Manufacturing, and Critical Operations",
+  "Retail and Consumer"
 ];
 
 const targetAccounts = [
@@ -399,11 +400,13 @@ const targetAccounts = [
   { account: "Washington Companies",        industry: "Industrial, Manufacturing, and Critical Operations" },
   { account: "Mercedes-Benz Group",         industry: "Industrial, Manufacturing, and Critical Operations" },
   { account: "3M",                          industry: "Industrial, Manufacturing, and Critical Operations" },
-  { account: "Home Depot",                  industry: "Industrial, Manufacturing, and Critical Operations" }
+  // Retail
+  { account: "Home Depot",                  industry: "Retail and Consumer" }
 ];
 
 const industries = [
   {
+    icon: "activity",
     title: "Healthcare",
     meta: "Risk-controlled productivity for sensitive workflows",
     accounts: ["Trinity Health", "Texas Health Resources", "Beth Israel Lahey Health", "NewYork-Presbyterian", "HCA Healthcare"],
@@ -422,6 +425,7 @@ const industries = [
     buyers: ["CIO", "Chief Digital Officer", "Chief Compliance Officer", "CFO", "COO", "Revenue cycle leadership"]
   },
   {
+    icon: "microscope",
     title: "Life Sciences",
     meta: "Safe acceleration of regulated knowledge work",
     accounts: ["Pfizer", "Bristol Myers Squibb", "Novartis", "Roche", "Boehringer Ingelheim", "Johnson & Johnson"],
@@ -441,6 +445,7 @@ const industries = [
     buyers: ["CIO", "Chief Digital Officer", "Head of Regulatory Affairs", "Head of Clinical Operations", "Head of Quality", "Chief Compliance Officer"]
   },
   {
+    icon: "briefcase",
     title: "CPA, Advisory, and Professional Services",
     meta: "Defensible AI-enabled professional work",
     accounts: ["EY", "BDO", "Infosys", "Other advisory and audit firms"],
@@ -460,6 +465,7 @@ const industries = [
     buyers: ["Managing Partner", "CIO", "Chief Innovation Officer", "Risk leadership", "Service line leaders", "Advisory practice leaders"]
   },
   {
+    icon: "landmark",
     title: "Banking, Financial Services, Wealth, and Insurance",
     meta: "Controlled AI adoption in supervised environments",
     accounts: ["LPL Financial", "Franklin Templeton", "Travelers", "The Hanover Insurance Group", "Wells Fargo", "Perella Weinberg Partners", "Integrity Marketing Group"],
@@ -480,6 +486,7 @@ const industries = [
     buyers: ["CIO", "CISO", "Chief Risk Officer", "Chief Compliance Officer", "COO", "Head of Operations", "Business unit presidents"]
   },
   {
+    icon: "shield",
     title: "Aerospace, Defense, and Industrial Defense",
     meta: "Commercial defense adjacency",
     accounts: ["Rheinmetall", "RTX Corporation", "General Dynamics", "Boeing"],
@@ -499,9 +506,10 @@ const industries = [
     buyers: ["CIO", "CTO", "CISO", "Program executives", "Engineering operations leaders", "Compliance and security leaders"]
   },
   {
+    icon: "factory",
     title: "Industrial, Manufacturing, and Critical Operations",
     meta: "Operational efficiency under control",
-    accounts: ["Caterpillar", "Washington Companies", "Mercedes-Benz Group", "3M", "Home Depot"],
+    accounts: ["Caterpillar", "Washington Companies", "Mercedes-Benz Group", "3M"],
     problem:
       "Manufacturing and industrial enterprises manage operational data, technical documentation, maintenance records, supply chain information, safety requirements, and distributed workflows.",
     useCases: [
@@ -516,6 +524,26 @@ const industries = [
     strategy:
       "Lead with bringing AI into industrial workflows without introducing unmanaged operational risk.",
     buyers: ["COO", "CIO", "CTO", "Head of Manufacturing Operations", "Supply chain leadership", "Quality leadership"]
+  },
+  {
+    icon: "shopping-bag",
+    title: "Retail and Consumer",
+    meta: "AI governance for high-volume consumer operations",
+    accounts: ["Home Depot"],
+    problem:
+      "Large retailers and consumer companies manage massive volumes of unstructured data across merchandising, supply chain, store operations, customer service, vendor networks, and compliance. AI deployment has outpaced governance frameworks, creating risk in consumer-facing and operational systems.",
+    useCases: [
+      "Customer service and escalation workflow automation",
+      "Supply chain and vendor risk analysis",
+      "Contract and vendor documentation review",
+      "Merchandising intelligence with human oversight",
+      "Operational compliance and audit documentation",
+      "Store operations reporting and analysis",
+      "Inventory and procurement workflow support"
+    ],
+    strategy:
+      "Lead with operational governance across supply chain and customer-facing workflows. Retailers face growing regulatory exposure in data use, labor workflows, and vendor management.",
+    buyers: ["CIO", "COO", "Chief Digital Officer", "Chief Customer Officer", "Head of Operations", "Supply chain leadership"]
   }
 ];
 
@@ -681,26 +709,6 @@ function checklistItem(text, checkKey) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// RENDER: INDUSTRIES OVERVIEW
-// ═══════════════════════════════════════════════════════════════════
-
-function renderIndustriesOverview() {
-  const container = document.querySelector("#industries-overview");
-  if (!container) return;
-  container.innerHTML = industries
-    .map(
-      (industry, i) => `
-        <div class="overview-card" style="--accent:${accents[i % accents.length]}">
-          <div class="overview-card-header">
-            <strong class="overview-card-title">${escapeHtml(industry.title)}</strong>
-            <span class="overview-card-meta">${escapeHtml(industry.meta)}</span>
-          </div>
-        </div>`
-    )
-    .join("");
-}
-
-// ═══════════════════════════════════════════════════════════════════
 // RENDER: TARGET ACCOUNTS (grouped by industry, logo + name only)
 // ═══════════════════════════════════════════════════════════════════
 
@@ -811,14 +819,19 @@ function accordionCard(item, index, type) {
         ${detailBlock("Buyer Strategy", `<p>${escapeHtml(item.strategy)}</p>`)}
       </div>`;
 
+  const iconEl = !isCompetitor && item.icon
+    ? `<span class="accd-icon" style="background:${accents[index % accents.length]}"><i data-lucide="${item.icon}"></i></span>`
+    : "";
+
   return `
     <article class="accordion-card searchable" data-title="${escapeHtml(item.title)}" data-search="${escapeHtml(searchText)}">
-      <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="${panelId}">
+      <button class="accordion-trigger${iconEl ? " accordion-trigger--has-icon" : ""}" type="button" aria-expanded="false" aria-controls="${panelId}">
+        ${iconEl}
         <span class="accordion-title">
           <strong>${index + 1}. ${escapeHtml(item.title)}</strong>
           <span>${escapeHtml(item.meta)}</span>
         </span>
-        <span class="accordion-meta">${isCompetitor ? "Competitive posture and buyer strategy" : "Accounts, use cases, and buyer motion"}</span>
+        <span class="accordion-meta">${isCompetitor ? "Competitive posture and buyer strategy" : "Use cases and buyer motion"}</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
       <div class="accordion-panel" id="${panelId}" hidden>${panel}</div>
@@ -1100,7 +1113,6 @@ function escapeHtml(value) {
 // INIT
 // ═══════════════════════════════════════════════════════════════════
 
-renderIndustriesOverview();
 renderAccountsSection();
 renderMarketFunctions();
 renderAccordions();
@@ -1114,3 +1126,5 @@ setupAccordions();
 setupSearch();
 setupCheckboxes();
 setupNavObserver();
+
+if (window.lucide) lucide.createIcons();
