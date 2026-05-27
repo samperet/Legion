@@ -1,42 +1,15 @@
 // ═══════════════════════════════════════════════════════════════════
-// PERSISTENCE — edit store + checkbox state
+// CHECKBOX STATE (localStorage)
 // ═══════════════════════════════════════════════════════════════════
 
-const editStore = {
-  _p: "legion-edit-",
-  get(key) {
-    try {
-      return localStorage.getItem(this._p + key);
-    } catch {
-      return null;
-    }
-  },
-  set(key, value) {
-    try {
-      localStorage.setItem(this._p + key, value);
-    } catch {}
-  },
-  clear() {
-    try {
-      Object.keys(localStorage)
-        .filter((k) => k.startsWith(this._p))
-        .forEach((k) => localStorage.removeItem(k));
-    } catch {}
-  }
+const checkStore = {
+  _p: "legion-chk-",
+  get(k) { try { return localStorage.getItem(this._p + k); } catch { return null; } },
+  set(k, v) { try { localStorage.setItem(this._p + k, v); } catch {} }
 };
 
-function editableValue(key, fallback) {
-  const saved = editStore.get(key);
-  return saved !== null && saved !== "" ? saved : fallback ?? "";
-}
-
-function getCheckState(key) {
-  return editStore.get("chk-" + key) === "true";
-}
-
-function setCheckState(key, checked) {
-  editStore.set("chk-" + key, String(checked));
-}
+function getCheckState(key) { return checkStore.get(key) === "true"; }
+function setCheckState(key, v) { checkStore.set(key, String(v)); }
 
 // ═══════════════════════════════════════════════════════════════════
 // DATA
@@ -101,7 +74,9 @@ const companyDomains = [
   ["Boeing", "boeing.com"],
   ["Caterpillar", "caterpillar.com"],
   ["Washington Companies", "washcorp.com"],
-  ["Mercedes-Benz", "mercedes-benz.com"]
+  ["Mercedes-Benz", "mercedes-benz.com"],
+  ["3M", "3m.com"],
+  ["Home Depot", "homedepot.com"]
 ];
 
 const marketFunctions = [
@@ -379,6 +354,54 @@ const strategicContrasts = [
   ["Consulting roadmap", "Defines strategy", "May not provide execution layer", "Legion provides the operating platform"]
 ];
 
+const INDUSTRY_OPTIONS = [
+  "Healthcare",
+  "Life Sciences",
+  "CPA, Advisory, and Professional Services",
+  "Banking, Financial Services, Wealth, and Insurance",
+  "Aerospace, Defense, and Industrial Defense",
+  "Industrial, Manufacturing, and Critical Operations"
+];
+
+const targetAccounts = [
+  // Healthcare
+  { account: "Trinity Health",              industry: "Healthcare" },
+  { account: "Texas Health Resources",      industry: "Healthcare" },
+  { account: "Beth Israel Lahey Health",    industry: "Healthcare" },
+  { account: "NewYork-Presbyterian",        industry: "Healthcare" },
+  { account: "HCA Healthcare",              industry: "Healthcare" },
+  // Life Sciences
+  { account: "Pfizer",                      industry: "Life Sciences" },
+  { account: "Bristol Myers Squibb",        industry: "Life Sciences" },
+  { account: "Novartis",                    industry: "Life Sciences" },
+  { account: "Roche",                       industry: "Life Sciences" },
+  { account: "Boehringer Ingelheim",        industry: "Life Sciences" },
+  { account: "Johnson & Johnson",           industry: "Life Sciences" },
+  // CPA / Advisory
+  { account: "EY",                          industry: "CPA, Advisory, and Professional Services" },
+  { account: "BDO",                         industry: "CPA, Advisory, and Professional Services" },
+  { account: "Infosys",                     industry: "CPA, Advisory, and Professional Services" },
+  // Banking / Financial
+  { account: "LPL Financial",               industry: "Banking, Financial Services, Wealth, and Insurance" },
+  { account: "Franklin Templeton",          industry: "Banking, Financial Services, Wealth, and Insurance" },
+  { account: "Travelers",                   industry: "Banking, Financial Services, Wealth, and Insurance" },
+  { account: "The Hanover Insurance Group", industry: "Banking, Financial Services, Wealth, and Insurance" },
+  { account: "Wells Fargo",                 industry: "Banking, Financial Services, Wealth, and Insurance" },
+  { account: "Perella Weinberg Partners",   industry: "Banking, Financial Services, Wealth, and Insurance" },
+  { account: "Integrity Marketing Group",   industry: "Banking, Financial Services, Wealth, and Insurance" },
+  // Aerospace / Defense
+  { account: "Rheinmetall",                 industry: "Aerospace, Defense, and Industrial Defense" },
+  { account: "RTX Corporation",             industry: "Aerospace, Defense, and Industrial Defense" },
+  { account: "General Dynamics",            industry: "Aerospace, Defense, and Industrial Defense" },
+  { account: "Boeing",                      industry: "Aerospace, Defense, and Industrial Defense" },
+  // Industrial
+  { account: "Caterpillar",                 industry: "Industrial, Manufacturing, and Critical Operations" },
+  { account: "Washington Companies",        industry: "Industrial, Manufacturing, and Critical Operations" },
+  { account: "Mercedes-Benz Group",         industry: "Industrial, Manufacturing, and Critical Operations" },
+  { account: "3M",                          industry: "Industrial, Manufacturing, and Critical Operations" },
+  { account: "Home Depot",                  industry: "Industrial, Manufacturing, and Critical Operations" }
+];
+
 const industries = [
   {
     title: "Healthcare",
@@ -420,7 +443,7 @@ const industries = [
   {
     title: "CPA, Advisory, and Professional Services",
     meta: "Defensible AI-enabled professional work",
-    accounts: ["EY", "BDO", "Other advisory and audit firms"],
+    accounts: ["EY", "BDO", "Infosys", "Other advisory and audit firms"],
     problem:
       "CPA and advisory firms need AI in audit, tax, advisory, diligence, compliance, and client-service workflows, but professional services work depends on judgment, client confidentiality, documentation, and defensible work product.",
     useCases: [
@@ -478,7 +501,7 @@ const industries = [
   {
     title: "Industrial, Manufacturing, and Critical Operations",
     meta: "Operational efficiency under control",
-    accounts: ["Caterpillar", "Washington Companies", "Mercedes-Benz Group"],
+    accounts: ["Caterpillar", "Washington Companies", "Mercedes-Benz Group", "3M", "Home Depot"],
     problem:
       "Manufacturing and industrial enterprises manage operational data, technical documentation, maintenance records, supply chain information, safety requirements, and distributed workflows.",
     useCases: [
@@ -585,135 +608,6 @@ const motionPhases = [
   }
 ];
 
-const messages = [
-  {
-    title: "Primary Message",
-    body:
-      "Regulated enterprises are ready for AI agents, but not unmanaged AI agents. Legion provides the governed execution layer that allows AI agents to safely operate across sensitive systems, with humans in control and auditability built in."
-  },
-  {
-    title: "ALPS Message",
-    body:
-      "ALPS gives Legion immediate commercial access into regulated industries where the need for governed AI is already urgent."
-  },
-  {
-    title: "Investor Message",
-    body:
-      "Legion is not only expanding in government. It is positioned to extend its government-grade AI governance model into regulated commercial markets through an active ALPS-led commercial motion."
-  },
-  {
-    title: "Buyer Message",
-    body:
-      "You do not need another AI experiment. You need a safe way to put AI agents to work inside your enterprise."
-  }
-];
-
-const activationPlan = [
-  {
-    days: "Days 1 to 15",
-    title: "Positioning and Targeting",
-    items: [
-      "Finalize sector-specific messaging",
-      "Prioritize target accounts",
-      "Define buyer personas and entry points",
-      "Create executive outreach language",
-      "Select 3 to 5 highest-probability use cases per sector"
-    ]
-  },
-  {
-    days: "Days 16 to 45",
-    title: "Executive Outreach and Market Validation",
-    items: [
-      "Activate ALPS advisor network",
-      "Schedule senior-level conversations",
-      "Test industry pain points",
-      "Identify early pilot sponsors",
-      "Capture objections and competitive references"
-    ]
-  },
-  {
-    days: "Days 46 to 75",
-    title: "Pilot Structuring",
-    items: [
-      "Convert qualified conversations into pilot concepts",
-      "Define workflow scope, data sensitivity, human oversight model, and audit requirements",
-      "Build business case by sector",
-      "Identify internal champions and budget owners"
-    ]
-  },
-  {
-    days: "Days 76 to 90",
-    title: "Investor-Visible Commercial Proof",
-    items: [
-      "Summarize pipeline and buyer feedback",
-      "Identify pilot-ready opportunities",
-      "Document commercial use-case validation",
-      "Package commercial expansion story for investor conversations",
-      "Recommend next-stage go-to-market investment"
-    ]
-  }
-];
-
-// ═══════════════════════════════════════════════════════════════════
-// ACCOUNTS TABLE DATA
-// ═══════════════════════════════════════════════════════════════════
-
-const INDUSTRY_OPTIONS = [
-  'Healthcare',
-  'Life Sciences',
-  'CPA, Advisory, and Professional Services',
-  'Banking, Financial Services, Wealth, and Insurance',
-  'Aerospace, Defense, and Industrial Defense',
-  'Industrial, Manufacturing, and Critical Operations',
-];
-
-const STATUS_OPTIONS = ['Target', 'Warm Path', 'Outreached', 'In Conversation', 'Pilot Candidate', 'Pass'];
-
-const defaultAccounts = [
-  { account: 'Trinity Health',              industry: 'Healthcare',                                          status: 'Target', contact: '', notes: '' },
-  { account: 'Texas Health Resources',      industry: 'Healthcare',                                          status: 'Target', contact: '', notes: '' },
-  { account: 'Beth Israel Lahey Health',    industry: 'Healthcare',                                          status: 'Target', contact: '', notes: '' },
-  { account: 'NewYork-Presbyterian',        industry: 'Healthcare',                                          status: 'Target', contact: '', notes: '' },
-  { account: 'HCA Healthcare',              industry: 'Healthcare',                                          status: 'Target', contact: '', notes: '' },
-  { account: 'Pfizer',                      industry: 'Life Sciences',                                       status: 'Target', contact: '', notes: '' },
-  { account: 'Bristol Myers Squibb',        industry: 'Life Sciences',                                       status: 'Target', contact: '', notes: '' },
-  { account: 'Novartis',                    industry: 'Life Sciences',                                       status: 'Target', contact: '', notes: '' },
-  { account: 'Roche',                       industry: 'Life Sciences',                                       status: 'Target', contact: '', notes: '' },
-  { account: 'Boehringer Ingelheim',        industry: 'Life Sciences',                                       status: 'Target', contact: '', notes: '' },
-  { account: 'Johnson & Johnson',           industry: 'Life Sciences',                                       status: 'Target', contact: '', notes: '' },
-  { account: 'EY',                          industry: 'CPA, Advisory, and Professional Services',            status: 'Target', contact: '', notes: '' },
-  { account: 'BDO',                         industry: 'CPA, Advisory, and Professional Services',            status: 'Target', contact: '', notes: '' },
-  { account: 'LPL Financial',               industry: 'Banking, Financial Services, Wealth, and Insurance', status: 'Target', contact: '', notes: '' },
-  { account: 'Franklin Templeton',          industry: 'Banking, Financial Services, Wealth, and Insurance', status: 'Target', contact: '', notes: '' },
-  { account: 'Travelers',                   industry: 'Banking, Financial Services, Wealth, and Insurance', status: 'Target', contact: '', notes: '' },
-  { account: 'The Hanover Insurance Group', industry: 'Banking, Financial Services, Wealth, and Insurance', status: 'Target', contact: '', notes: '' },
-  { account: 'Wells Fargo',                 industry: 'Banking, Financial Services, Wealth, and Insurance', status: 'Target', contact: '', notes: '' },
-  { account: 'Perella Weinberg Partners',   industry: 'Banking, Financial Services, Wealth, and Insurance', status: 'Target', contact: '', notes: '' },
-  { account: 'Integrity Marketing Group',   industry: 'Banking, Financial Services, Wealth, and Insurance', status: 'Target', contact: '', notes: '' },
-  { account: 'Rheinmetall',                 industry: 'Aerospace, Defense, and Industrial Defense',         status: 'Target', contact: '', notes: '' },
-  { account: 'RTX Corporation',             industry: 'Aerospace, Defense, and Industrial Defense',         status: 'Target', contact: '', notes: '' },
-  { account: 'General Dynamics',            industry: 'Aerospace, Defense, and Industrial Defense',         status: 'Target', contact: '', notes: '' },
-  { account: 'Boeing',                      industry: 'Aerospace, Defense, and Industrial Defense',         status: 'Target', contact: '', notes: '' },
-  { account: 'Caterpillar',                 industry: 'Industrial, Manufacturing, and Critical Operations', status: 'Target', contact: '', notes: '' },
-  { account: 'Washington Companies',        industry: 'Industrial, Manufacturing, and Critical Operations', status: 'Target', contact: '', notes: '' },
-  { account: 'Mercedes-Benz Group',         industry: 'Industrial, Manufacturing, and Critical Operations', status: 'Target', contact: '', notes: '' },
-];
-
-function getAccountsTable() {
-  const saved = editStore.get('accounts-table');
-  if (saved) { try { return JSON.parse(saved); } catch {} }
-  return defaultAccounts.map(a => ({ ...a }));
-}
-
-function saveAccountsTable(data) {
-  editStore.set('accounts-table', JSON.stringify(data));
-}
-
-function statusCssClass(status) {
-  const map = { 'Target': 'status-target', 'Warm Path': 'status-warm', 'Outreached': 'status-outreached', 'In Conversation': 'status-conversation', 'Pilot Candidate': 'status-pilot', 'Pass': 'status-pass' };
-  return map[status] || 'status-target';
-}
-
 // ═══════════════════════════════════════════════════════════════════
 // TEMPLATE HELPERS
 // ═══════════════════════════════════════════════════════════════════
@@ -731,9 +625,7 @@ function chips(items, options = {}) {
 
 function logoChip(name) {
   const domain = findCompanyDomain(name);
-  if (!domain) {
-    return `<span>${escapeHtml(name)}</span>`;
-  }
+  if (!domain) return `<span>${escapeHtml(name)}</span>`;
   const image = `<img src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=64" alt="" loading="lazy" onerror="this.remove()" />`;
   return `
     <span class="logo-chip">
@@ -742,8 +634,7 @@ function logoChip(name) {
         ${image}
       </span>
       <span class="logo-name">${escapeHtml(name)}</span>
-    </span>
-  `;
+    </span>`;
 }
 
 function findCompanyDomain(name) {
@@ -753,20 +644,15 @@ function findCompanyDomain(name) {
 }
 
 function initials(name) {
-  const words = name
-    .replace(/[^a-zA-Z0-9 ]/g, " ")
-    .split(" ")
-    .filter((word) => word.length > 1);
+  const words = name.replace(/[^a-zA-Z0-9 ]/g, " ").split(" ").filter((w) => w.length > 1);
   if (words.length === 0) return "ID";
   if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
-  return words.slice(0, 2).map((word) => word[0]).join("").toUpperCase();
+  return words.slice(0, 2).map((w) => w[0]).join("").toUpperCase();
 }
 
 function logoColor(name) {
   let hash = 0;
-  for (let index = 0; index < name.length; index += 1) {
-    hash = name.charCodeAt(index) + ((hash << 5) - hash);
-  }
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
   return accents[Math.abs(hash) % accents.length];
 }
 
@@ -782,19 +668,16 @@ function progressBar(done, total) {
         <div class="progress-bar" style="width:${pct}%"></div>
       </div>
       <span class="progress-label">${done} / ${total}</span>
-    </div>
-  `;
+    </div>`;
 }
 
-function checklistItem(text, checkKey, editKey) {
+function checklistItem(text, checkKey) {
   const done = getCheckState(checkKey);
-  const displayText = editKey ? editableValue(editKey, text) : text;
   return `
     <li class="checklist-item${done ? " is-done" : ""}">
-      <input type="checkbox" ${done ? "checked" : ""} data-check-key="${escapeHtml(checkKey)}" aria-label="${escapeHtml(displayText)}">
-      <span ${editKey ? `data-editable="${escapeHtml(editKey)}"` : ""}>${escapeHtml(displayText)}</span>
-    </li>
-  `;
+      <input type="checkbox" ${done ? "checked" : ""} data-check-key="${escapeHtml(checkKey)}" aria-label="${escapeHtml(text)}">
+      <span>${escapeHtml(text)}</span>
+    </li>`;
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -809,12 +692,11 @@ function renderIndustriesOverview() {
       (industry, i) => `
         <div class="overview-card" style="--accent:${accents[i % accents.length]}">
           <div class="overview-card-header">
-            <strong class="overview-card-title" data-editable="ind-${i}-title">${escapeHtml(editableValue(`ind-${i}-title`, industry.title))}</strong>
-            <span class="overview-card-meta" data-editable="ind-${i}-meta">${escapeHtml(editableValue(`ind-${i}-meta`, industry.meta))}</span>
+            <strong class="overview-card-title">${escapeHtml(industry.title)}</strong>
+            <span class="overview-card-meta">${escapeHtml(industry.meta)}</span>
           </div>
           ${chips(industry.accounts, { logos: true })}
-        </div>
-      `
+        </div>`
     )
     .join("");
 }
@@ -831,14 +713,45 @@ function renderCompetitorsOverview() {
       (arena, i) => `
         <div class="overview-card" style="--accent:${accents[i % accents.length]}">
           <div class="overview-card-header">
-            <strong class="overview-card-title" data-editable="comp-${i}-title">${escapeHtml(editableValue(`comp-${i}-title`, arena.title))}</strong>
+            <strong class="overview-card-title">${escapeHtml(arena.title)}</strong>
             <span class="overview-card-meta">${arena.competitors.length} competitors in this arena</span>
           </div>
           ${chips(arena.competitors, { logos: true })}
-        </div>
-      `
+        </div>`
     )
     .join("");
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RENDER: TARGET ACCOUNTS (grouped by industry, logo + name only)
+// ═══════════════════════════════════════════════════════════════════
+
+function renderAccountsSection() {
+  const container = document.querySelector("#accounts-table-container");
+  if (!container) return;
+
+  // Update topbar metric
+  const countEl = document.querySelector("#account-count");
+  if (countEl) countEl.textContent = targetAccounts.length;
+
+  // Group accounts by industry
+  const grouped = {};
+  INDUSTRY_OPTIONS.forEach((ind) => { grouped[ind] = []; });
+  targetAccounts.forEach(({ account, industry }) => {
+    if (grouped[industry]) grouped[industry].push(account);
+  });
+
+  container.innerHTML = `
+    <div class="accounts-groups">
+      ${INDUSTRY_OPTIONS
+        .filter((ind) => grouped[ind].length > 0)
+        .map((ind, i) => `
+          <div class="accounts-group">
+            <p class="accounts-group-label" style="--accent:${accents[i % accents.length]}">${escapeHtml(ind)}</p>
+            ${chips(grouped[ind], { logos: true })}
+          </div>`)
+        .join("")}
+    </div>`;
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -846,21 +759,19 @@ function renderCompetitorsOverview() {
 // ═══════════════════════════════════════════════════════════════════
 
 function renderMarketFunctions() {
-  const container = document.querySelector("#function-grid");
-  container.innerHTML = marketFunctions
+  document.querySelector("#function-grid").innerHTML = marketFunctions
     .map(
       (item, index) => `
         <article class="function-card" style="--accent:${accents[index % accents.length]}">
           <strong>${escapeHtml(item)}</strong>
           <p>${functionDescription(item)}</p>
-        </article>
-      `
+        </article>`
     )
     .join("");
 }
 
 function functionDescription(item) {
-  const descriptions = {
+  const d = {
     "Governed agent orchestration": "Coordinate agent behavior across tools, systems, and decision points.",
     "Human-in-the-loop workflow execution": "Keep approval, review, and escalation in the operating model.",
     "Enterprise data grounding and unstructured data access": "Use documents, knowledge repositories, records, contracts, and emails safely.",
@@ -868,7 +779,7 @@ function functionDescription(item) {
     "Identity, permissions, and secure tool use": "Define what agents can access and where action boundaries sit.",
     "Workflow automation across enterprise systems": "Turn search and analysis into supervised execution."
   };
-  return descriptions[item];
+  return d[item] || "";
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -885,12 +796,11 @@ function rowTemplate(row) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// RENDER: ACCORDIONS (industry + competitor detail)
+// RENDER: ACCORDIONS
 // ═══════════════════════════════════════════════════════════════════
 
 function accordionCard(item, index, type) {
   const panelId = `${type}-${index}`;
-  const prefix = type === "competitor" ? `comp-${index}` : `ind-${index}`;
   const searchText = [
     item.title, item.meta, item.description, item.positioning,
     item.problem, item.strategy,
@@ -903,55 +813,48 @@ function accordionCard(item, index, type) {
   const isCompetitor = type === "competitor";
   const panel = isCompetitor
     ? `
-      ${detailBlock("Category Description", `<p data-editable="${prefix}-desc">${escapeHtml(editableValue(`${prefix}-desc`, item.description))}</p>`)}
+      ${detailBlock("Category Description", `<p>${escapeHtml(item.description)}</p>`)}
       <div class="detail-grid">
         ${detailBlock("Representative Competitors", chips(item.competitors, { logos: true }))}
         ${detailBlock("Competitive Functions", list(item.functions))}
         ${detailBlock("Competitive Strengths", list(item.strengths))}
         ${detailBlock("Competitive Weaknesses", list(item.weaknesses))}
       </div>
-      ${detailBlock("Legion Positioning", `<p data-editable="${prefix}-pos">${escapeHtml(editableValue(`${prefix}-pos`, item.positioning))}</p>`)}
+      ${detailBlock("Legion Positioning", `<p>${escapeHtml(item.positioning)}</p>`)}
       <div class="detail-grid">
         ${detailBlock("Buyer Signals", list(item.buyerQuotes, "quote-list"))}
         ${detailBlock("Primary Buyers", chips(item.buyers))}
-      </div>
-    `
+      </div>`
     : `
       <div class="detail-grid">
         ${detailBlock("Target Accounts", chips(item.accounts, { logos: true }))}
         ${detailBlock("Primary Buyers", chips(item.buyers))}
       </div>
-      ${detailBlock("Industry Problem", `<p data-editable="${prefix}-prob">${escapeHtml(editableValue(`${prefix}-prob`, item.problem))}</p>`)}
+      ${detailBlock("Industry Problem", `<p>${escapeHtml(item.problem)}</p>`)}
       <div class="detail-grid">
         ${detailBlock("Legion Use Cases", list(item.useCases))}
-        ${detailBlock("Buyer Strategy", `<p data-editable="${prefix}-strat">${escapeHtml(editableValue(`${prefix}-strat`, item.strategy))}</p>`)}
-      </div>
-    `;
+        ${detailBlock("Buyer Strategy", `<p>${escapeHtml(item.strategy)}</p>`)}
+      </div>`;
 
   return `
     <article class="accordion-card searchable" data-title="${escapeHtml(item.title)}" data-search="${escapeHtml(searchText)}">
       <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="${panelId}">
         <span class="accordion-title">
-          <strong>${index + 1}. <span data-editable="${prefix}-title">${escapeHtml(editableValue(`${prefix}-title`, item.title))}</span></strong>
-          <span data-editable="${prefix}-meta">${escapeHtml(editableValue(`${prefix}-meta`, item.meta))}</span>
+          <strong>${index + 1}. ${escapeHtml(item.title)}</strong>
+          <span>${escapeHtml(item.meta)}</span>
         </span>
         <span class="accordion-meta">${isCompetitor ? "Competitive posture and buyer strategy" : "Accounts, use cases, and buyer motion"}</span>
         <span class="chevron" aria-hidden="true"></span>
       </button>
-      <div class="accordion-panel" id="${panelId}" hidden>
-        ${panel}
-      </div>
-    </article>
-  `;
+      <div class="accordion-panel" id="${panelId}" hidden>${panel}</div>
+    </article>`;
 }
 
 function renderAccordions() {
   document.querySelector("#competitor-list").innerHTML = competitiveCategories
-    .map((item, index) => accordionCard(item, index, "competitor"))
-    .join("");
+    .map((item, index) => accordionCard(item, index, "competitor")).join("");
   document.querySelector("#industry-list").innerHTML = industries
-    .map((item, index) => accordionCard(item, index, "industry"))
-    .join("");
+    .map((item, index) => accordionCard(item, index, "industry")).join("");
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -962,36 +865,32 @@ function renderPersonas(activeIndex = 0) {
   const tabs = document.querySelector("#persona-tabs");
   const panel = document.querySelector("#persona-panel");
   document.querySelector("#personas").dataset.search = personas
-    .map((p) => `${p.title} ${p.concern} ${p.message} ${p.outcome}`)
-    .join(" ");
+    .map((p) => `${p.title} ${p.concern} ${p.message} ${p.outcome}`).join(" ");
 
   tabs.innerHTML = personas
     .map(
       (persona, index) => `
         <button class="persona-tab" role="tab" id="persona-tab-${index}" aria-selected="${index === activeIndex}" aria-controls="persona-panel" type="button" data-persona="${index}">
           ${escapeHtml(persona.title)}
-        </button>
-      `
+        </button>`
     )
     .join("");
 
   const p = personas[activeIndex];
-  const pk = `persona-${activeIndex}`;
   panel.innerHTML = `
     <h3>${escapeHtml(p.title)}</h3>
     <div class="persona-point">
       <strong>Core Concern</strong>
-      <p data-editable="${pk}-concern">${escapeHtml(editableValue(`${pk}-concern`, p.concern))}</p>
+      <p>${escapeHtml(p.concern)}</p>
     </div>
     <div class="persona-point">
       <strong>Message</strong>
-      <p data-editable="${pk}-message">${escapeHtml(editableValue(`${pk}-message`, p.message))}</p>
+      <p>${escapeHtml(p.message)}</p>
     </div>
     <div class="persona-point">
       <strong>Desired Outcome</strong>
-      <p data-editable="${pk}-outcome">${escapeHtml(editableValue(`${pk}-outcome`, p.outcome))}</p>
-    </div>
-  `;
+      <p>${escapeHtml(p.outcome)}</p>
+    </div>`;
 
   tabs.querySelectorAll(".persona-tab").forEach((button) => {
     button.addEventListener("click", () => renderPersonas(Number(button.dataset.persona)));
@@ -999,72 +898,22 @@ function renderPersonas(activeIndex = 0) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// RENDER: ENTRY MOTION (checklist)
+// RENDER: ENTRY MOTION
 // ═══════════════════════════════════════════════════════════════════
 
 function renderMotion() {
   document.querySelector("#motion-list").innerHTML = motionPhases
     .map((item, pi) => {
       const doneCount = item.items.filter((_, ii) => getCheckState(`motion-${pi}-${ii}`)).length;
-      const total = item.items.length;
       return `
         <article class="timeline-card" style="--accent:${accents[pi % accents.length]}">
-          <span class="phase" data-editable="motion-${pi}-phase">${escapeHtml(editableValue(`motion-${pi}-phase`, item.phase))}</span>
-          <h3 data-editable="motion-${pi}-title">${escapeHtml(editableValue(`motion-${pi}-title`, item.title))}</h3>
-          ${progressBar(doneCount, total)}
+          <span class="phase">${escapeHtml(item.phase)}</span>
+          <h3>${escapeHtml(item.title)}</h3>
+          ${progressBar(doneCount, item.items.length)}
           <ul class="checklist">
-            ${item.items
-              .map((text, ii) =>
-                checklistItem(text, `motion-${pi}-${ii}`, `motion-${pi}-item-${ii}`)
-              )
-              .join("")}
+            ${item.items.map((text, ii) => checklistItem(text, `motion-${pi}-${ii}`)).join("")}
           </ul>
-        </article>
-      `;
-    })
-    .join("");
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// RENDER: MESSAGES
-// ═══════════════════════════════════════════════════════════════════
-
-function renderMessages() {
-  document.querySelector("#message-grid").innerHTML = messages
-    .map(
-      (message, index) => `
-        <article class="message-card" style="--accent:${accents[index % accents.length]}">
-          <h3 data-editable="msg-${index}-title">${escapeHtml(editableValue(`msg-${index}-title`, message.title))}</h3>
-          <p data-editable="msg-${index}-body">${escapeHtml(editableValue(`msg-${index}-body`, message.body))}</p>
-        </article>
-      `
-    )
-    .join("");
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// RENDER: 90-DAY ACTIVATION (checklist)
-// ═══════════════════════════════════════════════════════════════════
-
-function renderActivation() {
-  document.querySelector("#activation-list").innerHTML = activationPlan
-    .map((phase, pi) => {
-      const doneCount = phase.items.filter((_, ii) => getCheckState(`act-${pi}-${ii}`)).length;
-      const total = phase.items.length;
-      return `
-        <article class="activation-card">
-          <strong class="activation-days" data-editable="act-${pi}-days">${escapeHtml(editableValue(`act-${pi}-days`, phase.days))}</strong>
-          <h3 data-editable="act-${pi}-title">${escapeHtml(editableValue(`act-${pi}-title`, phase.title))}</h3>
-          ${progressBar(doneCount, total)}
-          <ul class="checklist">
-            ${phase.items
-              .map((item, ii) =>
-                checklistItem(item, `act-${pi}-${ii}`, `act-${pi}-item-${ii}`)
-              )
-              .join("")}
-          </ul>
-        </article>
-      `;
+        </article>`;
     })
     .join("");
 }
@@ -1087,10 +936,7 @@ function setupSidebar() {
   document.querySelectorAll(".side-nav a").forEach((link) => {
     link.addEventListener("click", () => {
       const target = document.querySelector(link.getAttribute("href"));
-      if (target) {
-        setSectionExpanded(target, true);
-        setActiveNav(link);
-      }
+      if (target) { setSectionExpanded(target, true); setActiveNav(link); }
     });
   });
 }
@@ -1107,10 +953,7 @@ function setupSectionCollapsibles() {
     const body = document.createElement("div");
     body.className = "section-body";
     body.id = `${section.id}-body`;
-
-    while (heading.nextSibling) {
-      body.appendChild(heading.nextSibling);
-    }
+    while (heading.nextSibling) body.appendChild(heading.nextSibling);
 
     const toggle = document.createElement("button");
     toggle.className = "section-toggle";
@@ -1148,14 +991,14 @@ function setupAccordions() {
   });
 
   document.querySelector("#expand-all").addEventListener("click", () => {
-    document.querySelectorAll(".section-block").forEach((section) => setSectionExpanded(section, true));
-    document.querySelectorAll(".accordion-trigger").forEach((trigger) => setAccordion(trigger, true));
+    document.querySelectorAll(".section-block").forEach((s) => setSectionExpanded(s, true));
+    document.querySelectorAll(".accordion-trigger").forEach((t) => setAccordion(t, true));
     document.querySelectorAll("details.detail-disclosure").forEach((d) => { d.open = true; });
   });
 
   document.querySelector("#collapse-all").addEventListener("click", () => {
-    document.querySelectorAll(".section-block").forEach((section) => setSectionExpanded(section, false));
-    document.querySelectorAll(".accordion-trigger").forEach((trigger) => setAccordion(trigger, false));
+    document.querySelectorAll(".section-block").forEach((s) => setSectionExpanded(s, false));
+    document.querySelectorAll(".accordion-trigger").forEach((t) => setAccordion(t, false));
     document.querySelectorAll("details.detail-disclosure").forEach((d) => { d.open = false; });
   });
 }
@@ -1183,28 +1026,22 @@ function setupSearch() {
       const haystack = `${node.dataset.title || ""} ${node.dataset.search || ""} ${node.textContent}`.toLowerCase();
       const isMatch = !query || haystack.includes(query);
       node.classList.toggle("is-hidden", !isMatch);
-      if (isMatch) matches += 1;
+      if (isMatch) matches++;
       if (query && isMatch && node.classList.contains("section-block")) setSectionExpanded(node, true);
       if (query && isMatch && node.closest(".section-block")) setSectionExpanded(node.closest(".section-block"), true);
       const trigger = node.querySelector(".accordion-trigger");
       if (trigger && query && isMatch) setAccordion(trigger, true);
     });
 
-    // Open detail disclosures if matches inside
     document.querySelectorAll("details.detail-disclosure").forEach((d) => {
       if (!query) return;
-      const hasMatch = d.querySelector(".accordion-card:not(.is-hidden)");
-      if (hasMatch) d.open = true;
+      if (d.querySelector(".accordion-card:not(.is-hidden)")) d.open = true;
     });
 
-    status.textContent = query
-      ? `${matches} matching sections for "${input.value.trim()}".`
-      : "Showing the full strategy.";
+    status.textContent = query ? `${matches} matching sections for "${input.value.trim()}".` : "Showing the full strategy.";
 
     const firstVisible = document.querySelector(".section-block:not(.is-hidden)");
-    const matchingLink = firstVisible
-      ? document.querySelector(`.side-nav a[href="#${firstVisible.id}"]`)
-      : null;
+    const matchingLink = firstVisible ? document.querySelector(`.side-nav a[href="#${firstVisible.id}"]`) : null;
     if (matchingLink) setActiveNav(matchingLink);
   });
 }
@@ -1220,7 +1057,7 @@ function setupCheckboxes() {
     setCheckState(cb.dataset.checkKey, cb.checked);
     const item = cb.closest(".checklist-item");
     if (item) item.classList.toggle("is-done", cb.checked);
-    updateProgress(cb.closest(".activation-card, .timeline-card"));
+    updateProgress(cb.closest(".timeline-card"));
   });
 }
 
@@ -1228,80 +1065,11 @@ function updateProgress(card) {
   if (!card) return;
   const cbs = [...card.querySelectorAll("input[type='checkbox']")];
   const done = cbs.filter((c) => c.checked).length;
-  const total = cbs.length;
-  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const pct = cbs.length ? Math.round((done / cbs.length) * 100) : 0;
   const bar = card.querySelector(".progress-bar");
   const label = card.querySelector(".progress-label");
   if (bar) bar.style.width = `${pct}%`;
-  if (label) label.textContent = `${done} / ${total}`;
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// SETUP: EDIT MODE
-// ═══════════════════════════════════════════════════════════════════
-
-let isEditMode = false;
-
-function setupEditMode() {
-  const toggleBtn = document.querySelector("#edit-toggle");
-  const resetBtn = document.querySelector("#reset-edits");
-  const banner = document.querySelector("#edit-banner");
-
-  toggleBtn?.addEventListener("click", () => {
-    isEditMode = !isEditMode;
-    document.body.classList.toggle("edit-mode", isEditMode);
-    toggleBtn.classList.toggle("is-editing", isEditMode);
-    toggleBtn.textContent = isEditMode ? "✓ Done" : "✎ Edit";
-    if (resetBtn) resetBtn.hidden = !isEditMode;
-    if (banner) banner.hidden = !isEditMode;
-
-    document.querySelectorAll("[data-editable]").forEach((el) => {
-      el.contentEditable = isEditMode ? "true" : "false";
-    });
-  });
-
-  resetBtn?.addEventListener("click", () => {
-    if (confirm("Reset all edits back to defaults? This cannot be undone.")) {
-      editStore.clear();
-      location.reload();
-    }
-  });
-
-  // Save on blur
-  document.addEventListener(
-    "blur",
-    (e) => {
-      const el = e.target;
-      if (!el.dataset.editable || !isEditMode) return;
-      const text = el.textContent.trim();
-      editStore.set(el.dataset.editable, text);
-      // Sync any other elements with the same edit key
-      document.querySelectorAll(`[data-editable="${el.dataset.editable}"]`).forEach((twin) => {
-        if (twin !== el) twin.textContent = text;
-      });
-    },
-    true
-  );
-
-  // Prevent Enter creating newlines in short fields (not paragraphs)
-  document.addEventListener("keydown", (e) => {
-    if (e.key !== "Enter" || e.shiftKey || !e.target.dataset.editable) return;
-    const isMultiline = e.target.tagName === "P";
-    if (!isMultiline) {
-      e.preventDefault();
-      e.target.blur();
-    }
-  });
-
-  // Sync edits between overview and accordion (same key, different DOM elements)
-  document.addEventListener("input", (e) => {
-    const el = e.target;
-    if (!el.dataset.editable || !isEditMode) return;
-    const key = el.dataset.editable;
-    document.querySelectorAll(`[data-editable="${key}"]`).forEach((twin) => {
-      if (twin !== el) twin.textContent = el.textContent;
-    });
-  });
+  if (label) label.textContent = `${done} / ${cbs.length}`;
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1326,10 +1094,7 @@ function setupNavObserver() {
   };
 
   window.addEventListener("scroll", () => {
-    if (!ticking) {
-      window.requestAnimationFrame(update);
-      ticking = true;
-    }
+    if (!ticking) { window.requestAnimationFrame(update); ticking = true; }
   });
 
   update();
@@ -1357,217 +1122,21 @@ function escapeHtml(value) {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// RENDER + SETUP: ACCOUNTS TABLE
-// ═══════════════════════════════════════════════════════════════════
-
-function renderAccountRow(account, index) {
-  const domain = findCompanyDomain(account.account);
-  const color = logoColor(account.account);
-  const img = domain
-    ? `<img src="https://www.google.com/s2/favicons?domain=${encodeURIComponent(domain)}&sz=32" alt="" loading="lazy" onerror="this.remove()" />`
-    : '';
-  const industryOpts = INDUSTRY_OPTIONS
-    .map(o => `<option value="${escapeHtml(o)}"${o === account.industry ? ' selected' : ''}>${escapeHtml(o)}</option>`)
-    .join('');
-  const statusOpts = STATUS_OPTIONS
-    .map(o => `<option value="${escapeHtml(o)}"${o === account.status ? ' selected' : ''}>${escapeHtml(o)}</option>`)
-    .join('');
-
-  return `
-    <tr class="acct-row" data-industry="${escapeHtml(account.industry)}" data-status="${escapeHtml(account.status)}">
-      <td class="acct-cell-name">
-        <span class="acct-logo" style="--logo-color:${color}"><span>${escapeHtml(initials(account.account))}</span>${img}</span>
-        <span class="cell-edit" contenteditable="false" data-field="account" data-row="${index}" data-placeholder="Account name">${escapeHtml(account.account)}</span>
-      </td>
-      <td>
-        <select class="acct-select acct-industry" data-field="industry" data-row="${index}">${industryOpts}</select>
-      </td>
-      <td>
-        <select class="acct-select acct-status ${statusCssClass(account.status)}" data-field="status" data-row="${index}">${statusOpts}</select>
-      </td>
-      <td>
-        <span class="cell-edit" contenteditable="false" data-field="contact" data-row="${index}" data-placeholder="Name or role">${escapeHtml(account.contact || '')}</span>
-      </td>
-      <td>
-        <span class="cell-edit cell-edit--notes" contenteditable="false" data-field="notes" data-row="${index}" data-placeholder="Add notes…">${escapeHtml(account.notes || '')}</span>
-      </td>
-      <td><button class="acct-del" data-row="${index}" type="button" title="Remove">×</button></td>
-    </tr>`;
-}
-
-function renderAccountsTable() {
-  const container = document.querySelector('#accounts-table-container');
-  if (!container) return;
-  const accounts = getAccountsTable();
-
-  // Update header metric
-  const countEl = document.querySelector('#account-count');
-  if (countEl) countEl.textContent = accounts.length;
-
-  const industryFilterOpts = INDUSTRY_OPTIONS
-    .map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
-  const statusFilterOpts = STATUS_OPTIONS
-    .map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
-
-  container.innerHTML = `
-    <div class="acct-toolbar">
-      <div class="acct-filters">
-        <select id="acct-filter-industry" class="acct-filter-select">
-          <option value="">All industries</option>${industryFilterOpts}
-        </select>
-        <select id="acct-filter-status" class="acct-filter-select">
-          <option value="">All statuses</option>${statusFilterOpts}
-        </select>
-      </div>
-      <span class="acct-count" id="acct-visible-count">${accounts.length} accounts</span>
-    </div>
-    <div class="acct-table-wrap">
-      <table class="acct-table">
-        <thead>
-          <tr>
-            <th>Account</th>
-            <th>Industry</th>
-            <th>Status</th>
-            <th>ALPS Contact</th>
-            <th>Notes</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="acct-tbody">
-          ${accounts.map((a, i) => renderAccountRow(a, i)).join('')}
-        </tbody>
-      </table>
-    </div>
-    <button class="acct-add-btn" id="acct-add" type="button">+ Add Account</button>`;
-
-  applyAccountFilters();
-}
-
-function applyAccountFilters() {
-  const ind = document.querySelector('#acct-filter-industry')?.value || '';
-  const sta = document.querySelector('#acct-filter-status')?.value || '';
-  const rows = document.querySelectorAll('.acct-row');
-  let visible = 0;
-  rows.forEach(row => {
-    const show = (!ind || row.dataset.industry === ind) && (!sta || row.dataset.status === sta);
-    row.hidden = !show;
-    if (show) visible++;
-  });
-  const countEl = document.querySelector('#acct-visible-count');
-  if (countEl) countEl.textContent = visible === rows.length ? `${rows.length} accounts` : `${visible} of ${rows.length} accounts`;
-}
-
-function setupAccountsTable() {
-  const section = document.querySelector('#accounts');
-  if (!section) return;
-
-  // Click cell to edit
-  section.addEventListener('click', e => {
-    const cell = e.target.closest('.cell-edit');
-    if (!cell || cell.contentEditable === 'true') return;
-    cell.contentEditable = 'true';
-    cell.focus();
-    const range = document.createRange();
-    const sel = window.getSelection();
-    range.selectNodeContents(cell);
-    range.collapse(false);
-    sel.removeAllRanges();
-    sel.addRange(range);
-  });
-
-  // Save on blur
-  section.addEventListener('blur', e => {
-    const cell = e.target;
-    if (!cell.classList.contains('cell-edit')) return;
-    cell.contentEditable = 'false';
-    const row = parseInt(cell.dataset.row);
-    const field = cell.dataset.field;
-    const accounts = getAccountsTable();
-    if (!isNaN(row) && accounts[row]) {
-      accounts[row][field] = cell.textContent.trim();
-      saveAccountsTable(accounts);
-    }
-  }, true);
-
-  // Enter exits cell
-  section.addEventListener('keydown', e => {
-    if (e.key === 'Enter' && e.target.classList.contains('cell-edit')) {
-      e.preventDefault();
-      e.target.blur();
-    }
-  });
-
-  // Select changes
-  section.addEventListener('change', e => {
-    const sel = e.target;
-    if (sel.classList.contains('acct-select')) {
-      const row = parseInt(sel.dataset.row);
-      const field = sel.dataset.field;
-      const accounts = getAccountsTable();
-      if (!isNaN(row) && accounts[row]) {
-        accounts[row][field] = sel.value;
-        saveAccountsTable(accounts);
-        if (field === 'status') {
-          sel.className = `acct-select acct-status ${statusCssClass(sel.value)}`;
-          const rowEl = sel.closest('.acct-row');
-          if (rowEl) rowEl.dataset.status = sel.value;
-        }
-        if (field === 'industry') {
-          const rowEl = sel.closest('.acct-row');
-          if (rowEl) rowEl.dataset.industry = sel.value;
-        }
-      }
-    }
-    if (sel.id === 'acct-filter-industry' || sel.id === 'acct-filter-status') {
-      applyAccountFilters();
-    }
-  });
-
-  // Delete row
-  section.addEventListener('click', e => {
-    const btn = e.target.closest('.acct-del');
-    if (!btn) return;
-    const row = parseInt(btn.dataset.row);
-    const accounts = getAccountsTable();
-    if (!isNaN(row)) {
-      accounts.splice(row, 1);
-      saveAccountsTable(accounts);
-      renderAccountsTable();
-    }
-  });
-
-  // Add row
-  section.addEventListener('click', e => {
-    if (!e.target.closest('#acct-add')) return;
-    const accounts = getAccountsTable();
-    accounts.push({ account: 'New Account', industry: 'Healthcare', status: 'Target', contact: '', notes: '' });
-    saveAccountsTable(accounts);
-    renderAccountsTable();
-    // Focus new row's name cell
-    const rows = document.querySelectorAll('.acct-row');
-    const last = rows[rows.length - 1];
-    if (last) last.querySelector('.cell-edit')?.click();
-  });
-}
-
-// ═══════════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════════
 
 renderIndustriesOverview();
 renderCompetitorsOverview();
+renderAccountsSection();
 renderMarketFunctions();
 renderAccordions();
 renderTables();
 renderPersonas();
 renderMotion();
-renderAccountsTable();
 
 setupSidebar();
 setupSectionCollapsibles();
 setupAccordions();
 setupSearch();
 setupCheckboxes();
-setupEditMode();
-setupAccountsTable();
 setupNavObserver();

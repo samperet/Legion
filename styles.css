@@ -354,28 +354,6 @@ a { color: var(--alps-blue); }
   color: #fff;
 }
 
-#edit-toggle {
-  grid-column: 1 / -1;
-  font-size: 0.82rem;
-  font-weight: 500;
-}
-
-#edit-toggle.is-editing {
-  background: rgba(34, 153, 206, 0.22);
-  border-color: rgba(34, 153, 206, 0.6);
-  color: #93d4f0;
-}
-
-#reset-edits {
-  grid-column: 1 / -1;
-  border-color: rgba(154, 59, 46, 0.4);
-  color: rgba(255, 180, 165, 0.9);
-}
-
-#reset-edits:hover {
-  background: rgba(154, 59, 46, 0.14);
-}
-
 /* ── Collapsed state ──────────────────────────────────────── */
 
 .app-shell.sidebar-collapsed .sidebar { overflow: visible; }
@@ -415,51 +393,6 @@ a { color: var(--alps-blue); }
   margin-left: var(--sidebar-width);
   padding: 32px clamp(20px, 4vw, 56px) 72px;
   transition: margin-left var(--dur) var(--ease-out);
-}
-
-/* ═══ EDIT BANNER ══════════════════════════════════════════════ */
-
-.edit-banner {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding: 11px 16px;
-  border: 1px solid rgba(34, 153, 206, 0.35);
-  border-left: 3px solid var(--alps-blue);
-  border-radius: var(--radius);
-  background: var(--alps-blue-tint);
-  color: var(--alps-blue-press);
-  font-size: 0.82rem;
-  font-weight: 500;
-  letter-spacing: 0.01em;
-}
-
-.edit-banner-icon {
-  font-size: 1rem;
-  flex: 0 0 auto;
-}
-
-/* ═══ EDIT MODE INDICATORS ════════════════════════════════════ */
-
-.edit-mode [data-editable] {
-  border-radius: 2px;
-  cursor: text;
-  outline: 2px dashed transparent;
-  outline-offset: 2px;
-  transition: outline-color var(--dur-fast), background var(--dur-fast);
-}
-
-.edit-mode [data-editable]:hover {
-  outline-color: rgba(34, 153, 206, 0.5);
-  background: rgba(34, 153, 206, 0.04);
-}
-
-.edit-mode [data-editable]:focus,
-.edit-mode [data-editable][contenteditable="true"]:focus {
-  outline-color: var(--alps-blue);
-  outline-style: solid;
-  background: rgba(34, 153, 206, 0.06);
 }
 
 /* ═══ TOPBAR ═══════════════════════════════════════════════════ */
@@ -1454,232 +1387,24 @@ td:first-child {
   letter-spacing: -0.01em;
 }
 
-/* ═══ ACCOUNTS TABLE ═══════════════════════════════════════════ */
+/* ═══ ACCOUNTS GROUPED DISPLAY ══════════════════════════════════ */
 
-.acct-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
+.accounts-groups {
+  display: grid;
+  gap: 20px;
 }
 
-.acct-filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+.accounts-group {}
 
-.acct-filter-select {
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--fg-2);
-  background: var(--surface-fog);
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 6px 10px;
-  cursor: pointer;
-  outline: none;
-  transition: border-color var(--dur-fast);
-}
-
-.acct-filter-select:focus { border-color: var(--alps-blue); }
-
-.acct-count {
-  font-size: 0.76rem;
-  color: var(--fg-3);
-  font-weight: 500;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-}
-
-.acct-table-wrap {
-  overflow-x: auto;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-}
-
-.acct-table {
-  width: 100%;
-  min-width: 760px;
-  border-collapse: collapse;
-  background: var(--paper);
-  font-size: 0.88rem;
-}
-
-.acct-table thead th {
-  background: var(--surface-fog);
-  color: var(--alps-navy);
+.accounts-group-label {
+  margin: 0 0 10px;
   font-size: 0.68rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  padding: 10px 14px;
-  text-align: left;
+  letter-spacing: 0.1em;
+  color: var(--accent, var(--alps-blue));
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--line);
-  white-space: nowrap;
-}
-
-.acct-table thead th:nth-child(1) { width: 20%; }
-.acct-table thead th:nth-child(2) { width: 16%; }
-.acct-table thead th:nth-child(3) { width: 13%; }
-.acct-table thead th:nth-child(4) { width: 14%; }
-.acct-table thead th:nth-child(6) { width: 32px; }
-
-.acct-row td {
-  padding: 9px 14px;
-  border-bottom: 1px solid var(--line);
-  vertical-align: middle;
-  color: var(--fg-2);
-}
-
-.acct-row:last-child td { border-bottom: 0; }
-.acct-row:hover { background: #FAFBFC; }
-
-/* Account name cell */
-.acct-cell-name {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-/* Small logo avatar */
-.acct-logo {
-  position: relative;
-  display: grid;
-  flex: 0 0 22px;
-  width: 22px;
-  height: 22px;
-  place-items: center;
-  overflow: hidden;
-  border-radius: 50%;
-  background: var(--logo-color, var(--alps-navy-tint));
-  color: #fff;
-  font-size: 0.5rem;
-  font-weight: 700;
-}
-
-.acct-logo img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  background: #fff;
-}
-
-/* Editable table cell */
-.cell-edit {
-  display: block;
-  cursor: text;
-  border-radius: 2px;
-  padding: 2px 5px;
-  margin: -2px -5px;
-  min-height: 1.4em;
-  min-width: 60px;
-  outline: 1px solid transparent;
-  transition: background var(--dur-fast), outline-color var(--dur-fast);
-  white-space: pre-wrap;
-  word-break: break-word;
-}
-
-.cell-edit:empty::before {
-  content: attr(data-placeholder);
-  color: var(--fg-3);
-  pointer-events: none;
-  font-style: italic;
-}
-
-.acct-row:hover .cell-edit {
-  outline-color: rgba(34, 153, 206, 0.25);
-  background: rgba(34, 153, 206, 0.03);
-}
-
-.cell-edit[contenteditable="true"] {
-  outline: 1px solid var(--alps-blue);
-  background: #fff;
-  box-shadow: 0 0 0 3px rgba(34, 153, 206, 0.15);
-  border-radius: 2px;
-}
-
-.cell-edit--notes { min-width: 120px; }
-
-/* Industry and status selects */
-.acct-select {
-  font-family: inherit;
-  font-size: 0.8rem;
-  font-weight: 500;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  padding: 4px 6px;
-  background: var(--surface-fog);
-  color: var(--fg-2);
-  cursor: pointer;
-  outline: none;
-  max-width: 100%;
-  transition: border-color var(--dur-fast);
-}
-
-.acct-select:focus { border-color: var(--alps-blue); }
-
-/* Status badge colors */
-.acct-status.status-target       { background: var(--alps-navy-tint);  color: var(--alps-navy);       border-color: rgba(16,55,88,0.18); }
-.acct-status.status-warm         { background: var(--alps-blue-tint);  color: var(--alps-blue-press);  border-color: rgba(34,153,206,0.3); }
-.acct-status.status-outreached   { background: #EBF2E8;                color: #3A5C28;                 border-color: rgba(58,92,40,0.25); }
-.acct-status.status-conversation { background: #F5EDE0;                color: #7A5520;                 border-color: rgba(122,85,32,0.25); }
-.acct-status.status-pilot        { background: #E4F2EB;                color: #1F6030;                 border-color: rgba(31,96,48,0.25); }
-.acct-status.status-pass         { background: #F0F0F0;                color: #888;                    border-color: #ddd; }
-
-/* Delete button */
-.acct-del {
-  display: grid;
-  width: 22px;
-  height: 22px;
-  place-items: center;
-  border: 1px solid transparent;
-  border-radius: var(--radius);
-  background: transparent;
-  color: var(--fg-3);
-  font-size: 1rem;
-  cursor: pointer;
-  line-height: 1;
-  font-family: inherit;
-  opacity: 0;
-  transition: opacity var(--dur-fast), background var(--dur-fast), color var(--dur-fast);
-}
-
-.acct-row:hover .acct-del { opacity: 1; }
-
-.acct-del:hover {
-  background: #FDE8E5;
-  color: var(--alps-brick);
-  border-color: rgba(154, 59, 46, 0.2);
-}
-
-/* Add account button */
-.acct-add-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 12px;
-  padding: 8px 14px;
-  border: 1px dashed var(--line);
-  border-radius: var(--radius);
-  background: transparent;
-  color: var(--alps-blue);
-  font-family: inherit;
-  font-size: 0.82rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: border-color var(--dur-fast), background var(--dur-fast);
-}
-
-.acct-add-btn:hover {
-  border-color: var(--alps-blue);
-  background: var(--alps-blue-tint);
 }
 
 /* ═══ UTILITY ══════════════════════════════════════════════════ */
