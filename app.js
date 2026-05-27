@@ -701,27 +701,6 @@ function renderIndustriesOverview() {
 }
 
 // ═══════════════════════════════════════════════════════════════════
-// RENDER: COMPETITORS OVERVIEW
-// ═══════════════════════════════════════════════════════════════════
-
-function renderCompetitorsOverview() {
-  const container = document.querySelector("#competitors-overview");
-  if (!container) return;
-  container.innerHTML = competitiveCategories
-    .map(
-      (arena, i) => `
-        <div class="overview-card" style="--accent:${accents[i % accents.length]}">
-          <div class="overview-card-header">
-            <strong class="overview-card-title">${escapeHtml(arena.title)}</strong>
-            <span class="overview-card-meta">${arena.competitors.length} competitors in this arena</span>
-          </div>
-          ${chips(arena.competitors, { logos: true })}
-        </div>`
-    )
-    .join("");
-}
-
-// ═══════════════════════════════════════════════════════════════════
 // RENDER: TARGET ACCOUNTS (grouped by industry, logo + name only)
 // ═══════════════════════════════════════════════════════════════════
 
@@ -1122,7 +1101,6 @@ function escapeHtml(value) {
 // ═══════════════════════════════════════════════════════════════════
 
 renderIndustriesOverview();
-renderCompetitorsOverview();
 renderAccountsSection();
 renderMarketFunctions();
 renderAccordions();
